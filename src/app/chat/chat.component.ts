@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, ElementRef, OnInit, QueryList, ViewChild, ViewChildren} from '@angular/core';
 import {ChatService} from "../services/chat.service";
 
 @Component({
@@ -9,9 +9,21 @@ import {ChatService} from "../services/chat.service";
 export class ChatComponent implements OnInit {
 
   input: any;
+  @ViewChild('content') content!: ElementRef;
+  @ViewChildren('messages') messages!: QueryList<any>;
 
   constructor(public chatService: ChatService) {
 
+  }
+  ngAfterViewInit() {
+    this.scrollToBottom();
+    this.messages.changes.subscribe(this.scrollToBottom);
+  }
+
+  scrollToBottom = () => {
+    try {
+      this.content.nativeElement.scrollTop = this.content.nativeElement.scrollHeight;
+    } catch (err) {}
   }
 
   ngOnInit(): void {
