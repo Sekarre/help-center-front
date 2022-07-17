@@ -3,6 +3,7 @@ import { Client, Message, Stomp } from '@stomp/stompjs';
 // @ts-ignore
 import SockJS from 'sockjs-client';
 import {ChatMessage} from "../domain/ChatMessage";
+import {AuthService} from "./auth.service";
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +15,7 @@ export class ChatService {
   public stompClient: any;
   private channelId: string = "Test1";
 
-  constructor() {
+  constructor(private authService: AuthService) {
     this.initializeWebSocketConnection();
   }
 
