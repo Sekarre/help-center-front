@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
-import { Client, Message, Stomp } from '@stomp/stompjs';
+import {Injectable} from '@angular/core';
+import {Client, Message, Stomp} from '@stomp/stompjs';
 // @ts-ignore
 import SockJS from 'sockjs-client';
 import {ChatMessage} from "../domain/ChatMessage";
@@ -21,17 +21,23 @@ export class ChatService {
 
   initializeWebSocketConnection() {
     const serverUrl = 'http://localhost:8080/websocket';
-    const ws = new SockJS(serverUrl);
+    const ws = new SockJS(serverUrl, this.getAuthHeader());
     this.stompClient = Stomp.over(ws);
-    this.stompClient.connect({}, (frame: any) => {
+    this.stompClient.connect(this.getAuthHeader(), (frame: any) => {
       this.isConnected = true;
-      this.stompClient.subscribe('/room/private/' + this.channelId, (message: any) => {
+      this.stompClient.subscribe('/room/private/' + this.channelId,  (message: any) => {
         if (message.body) {
           let parsedMessage: ChatMessage = <ChatMessage>JSON.parse(message.body);
           this.messages.push(parsedMessage);
         }
       });
     });
+  }
+
+  private getAuthHeader() {
+    return {
+      'Authorization': 'Bearer ' + this.authService.getToken()
+    };
   }
 
   sendMessage(message: string) {

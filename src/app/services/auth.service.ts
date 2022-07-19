@@ -29,6 +29,12 @@ export class AuthService {
     return sessionStorage.getItem('token')!;
   }
 
+  getAuthHeaders(): any {
+    return {
+      'Authorization' : 'Bearer ' + this.getToken()
+    };
+  }
+
   setToken(token: string) {
     sessionStorage.setItem('token', token);
   }
