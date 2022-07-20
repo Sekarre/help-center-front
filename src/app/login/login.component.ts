@@ -13,7 +13,6 @@ import {COMMON_ERROR_MESSAGE} from "../domain/CommonMessages";
 export class LoginComponent implements OnInit {
 
   loginFormGroup!: FormGroup;
-  fieldTextType!: boolean;
 
   constructor(private authService: AuthService,
               private formBuilder: FormBuilder,
@@ -37,7 +36,7 @@ export class LoginComponent implements OnInit {
       .subscribe(
         response => {
           this.authService.setToken(response.token);
-          this.router.navigateByUrl('/chat');
+          this.router.navigateByUrl('/chat-channels');
         },
         error => {
           this.alertService.error(COMMON_ERROR_MESSAGE);

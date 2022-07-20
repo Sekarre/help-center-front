@@ -7,7 +7,7 @@
           <aside class="tengah-side">
             <div class="chat-room-head">
             </div>
-            <div #messages class="group-rom" *ngFor="let msg of chatService.messages">
+            <div #messagesTracker class="group-rom" *ngFor="let msg of chatService.messages">
               <div class="first-part odd">{{msg.senderName ?? "Unknown" }}</div>
               <div class="second-part">{{msg.message}}</div>
               <div class="third-part">{{msg.createdDateTime}}</div>

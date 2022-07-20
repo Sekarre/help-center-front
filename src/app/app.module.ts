@@ -10,13 +10,15 @@ import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {RouterModule} from "@angular/router";
 import {TokenInterceptorService} from "./services/token-interceptor.service";
 import {AppRoutingModule} from "./app-routing.module";
+import { ChatListComponent } from './chat-list/chat-list.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     ChatComponent,
     LoginComponent,
-    AlertComponent
+    AlertComponent,
+    ChatListComponent
   ],
   imports: [
     BrowserModule,

@@ -1,5 +1,7 @@
 import {Component, ElementRef, OnInit, QueryList, ViewChild, ViewChildren} from '@angular/core';
 import {ChatService} from "../services/chat.service";
+import {ActivatedRoute} from "@angular/router";
+import {ChatMessage} from "../domain/ChatMessage";
 
 @Component({
   selector: 'app-chat',
@@ -10,11 +12,20 @@ export class ChatComponent implements OnInit {
 
   input: any;
   @ViewChild('content') content!: ElementRef;
-  @ViewChildren('messages') messages!: QueryList<any>;
+  @ViewChildren('messagesTracker') messages!: QueryList<any>;
 
-  constructor(public chatService: ChatService) {
+  constructor(public chatService: ChatService,
+              private activatedRoute: ActivatedRoute) {
 
   }
+
+  ngOnInit(): void {
+    this.activatedRoute.paramMap.subscribe(params => {
+      console.log(params);
+      this.chatService.initializeWebSocketConnection(String(params.get('channelId')));
+    })
+  }
+
   ngAfterViewInit() {
     this.scrollToBottom();
     this.messages.changes.subscribe(this.scrollToBottom);
@@ -24,9 +35,6 @@ export class ChatComponent implements OnInit {
     try {
       this.content.nativeElement.scrollTop = this.content.nativeElement.scrollHeight;
     } catch (err) {}
-  }
-
-  ngOnInit(): void {
   }
 
   sendMessage() {
