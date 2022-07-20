@@ -7,7 +7,7 @@
           <aside class="tengah-side">
             <div class="chat-room-head">
             </div>
-            <div #messagesTracker class="group-rom" *ngFor="let msg of chatService.messages">
+            <div #messagesTracker class="group-rom" *ngFor="let msg of messages">
               <div class="first-part odd">{{msg.senderName ?? "Unknown" }}</div>
               <div class="second-part">{{msg.message}}</div>
               <div class="third-part">{{msg.createdDateTime}}</div>
@@ -17,10 +17,10 @@
       </div>
       <footer>
         <div class="chat-txt">
-          <input type="text" class="form-control" placeholder="message" [(ngModel)]="input" (keydown.enter)="sendMessage()" >
+          <input type="text" class="form-control" placeholder="message" [(ngModel)]="input" (keydown.enter)="getAndSendMessage()" >
         </div>
         <div class="btn-group">
-          <button class="btn btn-danger" data-original-title="" title="" (click)="sendMessage()">Send</button>
+          <button class="btn btn-danger" data-original-title="" title="" (click)="getAndSendMessage()">Send</button>
         </div>
       </footer>
     </div>

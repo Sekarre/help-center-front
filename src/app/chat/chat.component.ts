@@ -2,6 +2,9 @@ import {Component, ElementRef, OnInit, QueryList, ViewChild, ViewChildren} from 
 import {ChatService} from "../services/chat.service";
 import {ActivatedRoute} from "@angular/router";
 import {ChatMessage} from "../domain/ChatMessage";
+// @ts-ignore
+import SockJS from "sockjs-client";
+import {Stomp} from "@stomp/stompjs";
 
 @Component({
   selector: 'app-chat',
@@ -12,7 +15,12 @@ export class ChatComponent implements OnInit {
 
   input: any;
   @ViewChild('content') content!: ElementRef;
-  @ViewChildren('messagesTracker') messages!: QueryList<any>;
+  @ViewChildren('messagesTracker') messagessTracker!: QueryList<any>;
+  private isConnected: boolean = false;
+  public messages: ChatMessage[] = [];
+  private stompClient: any;
+  private channelId: string = "";
+  private serverUrl: string = 'http://localhost:8080/websocket';
 
   constructor(public chatService: ChatService,
               private activatedRoute: ActivatedRoute) {
@@ -22,25 +30,45 @@ export class ChatComponent implements OnInit {
   ngOnInit(): void {
     this.activatedRoute.paramMap.subscribe(params => {
       console.log(params);
-      this.chatService.initializeWebSocketConnection(String(params.get('channelId')));
+      this.initializeWebSocketConnection(String(params.get('channelId')));
     })
   }
 
   ngAfterViewInit() {
     this.scrollToBottom();
-    this.messages.changes.subscribe(this.scrollToBottom);
+    this.messagessTracker.changes.subscribe(this.scrollToBottom);
+  }
+
+  initializeWebSocketConnection(channelId: string) {
+    this.channelId = channelId;
+    const ws = new SockJS(this.serverUrl, this.chatService.getAuthHeader());
+    this.stompClient = Stomp.over(ws);
+    this.stompClient.connect(this.chatService.getAuthHeader(), (frame: any) => {
+      this.isConnected = true;
+      this.stompClient.subscribe('/room/private/' + this.channelId,  (message: any) => {
+        if (message.body) {
+          console.log(this.messages);
+          let parsedMessage: ChatMessage = <ChatMessage>JSON.parse(message.body);
+          this.messages.push(parsedMessage);
+        }
+      });
+    });
+  }
+
+  getAndSendMessage() {
+    if (this.input) {
+      this.sendMessage(this.input);
+      this.input = '';
+    }
+  }
+
+  sendMessage(message: string) {
+    this.stompClient.send('/chat-app/private-chat-room/' + this.channelId, {}, JSON.stringify({'message': message}));
   }
 
   scrollToBottom = () => {
     try {
       this.content.nativeElement.scrollTop = this.content.nativeElement.scrollHeight;
     } catch (err) {}
-  }
-
-  sendMessage() {
-    if (this.input) {
-      this.chatService.sendMessage(this.input);
-      this.input = '';
-    }
   }
 }
