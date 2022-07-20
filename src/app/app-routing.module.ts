@@ -9,7 +9,7 @@ import {ChatListComponent} from "./chat-list/chat-list.component";
 
 const routes: Routes = [
   {
-    path: '', component: ChatComponent,
+    path: '', component: LoginComponent,
   },
   {
     path: 'login', component: LoginComponent,
@@ -28,9 +28,7 @@ const routes: Routes = [
 
 @NgModule({
   imports: [
-    RouterModule.forRoot(routes, {
-      useHash: true
-    })
+    RouterModule.forRoot(routes)
   ],
   exports: [RouterModule]
 })
