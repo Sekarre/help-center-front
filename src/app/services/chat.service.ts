@@ -5,8 +5,9 @@ import SockJS from 'sockjs-client';
 import {ChatMessage} from "../domain/ChatMessage";
 import {AuthService} from "./auth.service";
 import {HttpClient} from "@angular/common/http";
-import {Observable} from "rxjs";
+import {map, Observable} from "rxjs";
 import {ActivatedRoute} from "@angular/router";
+import {ChatInfo} from "../domain/ChatInfo";
 
 @Injectable({
   providedIn: 'root'
@@ -25,7 +26,15 @@ export class ChatService {
     };
   }
 
-  getChatList(): Observable<string[]> {
-    return this.httpClient.get<string[]>(this.BASE_URL);
+  getChatList(): Observable<ChatInfo[]> {
+    return this.httpClient.get<ChatInfo[]>(this.BASE_URL);
+  }
+
+  joinChat(channelId: string): Observable<any> {
+    return this.httpClient.patch<any>(this.BASE_URL + "/" + channelId, null);
+  }
+
+  createNewChat(): Observable<ChatInfo> {
+    return this.httpClient.post<ChatInfo>(this.BASE_URL, JSON.stringify({}));
   }
 }

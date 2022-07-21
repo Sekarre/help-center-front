@@ -4,11 +4,16 @@
       <div class="single category">
         <h3 class="side-title">Chats</h3>
         <ul class="list-unstyled">
-          <li *ngFor="let channelId of chatList">
-            <a [routerLink]="['/chat', channelId]" title="{{channelId}}">{{channelId}} <span class="pull-right"></span></a>
+          <li *ngFor="let chat of chatList">
+            <a [routerLink]="['/chat', chat.channelId]" title="{{chat.channelName}}">{{chat.channelName}}
+              <span class="pull-right">
+                <button class="btn btn-danger" (click)="joinChat(chat.channelId)">Join</button>
+              </span>
+            </a>
           </li>
         </ul>
       </div>
+      <button class="btn btn-info" (click)="createNewChat()">Create new chat</button>
     </div>
   </div>
 </div>

@@ -74,7 +74,7 @@ body{
 }
 
 .chat-room-head {
-  background: #3498db;
+  background: #1b425d;
   color: #FFFFFF;
   min-height: 70px;
   padding: 15px;
@@ -258,7 +258,7 @@ ul.chat-user li a:hover{
   font-size: 16px;
 }
 .room-box h5 a {
-  color: #00a9b4;
+  color: #6ba2a6;
 }
 
 .chat-tools {
@@ -338,6 +338,12 @@ ul.chat-available-user li i {
 
 .group-rom .first-part.odd {
   background: #f7f8fa;
+  color: #6a6a6a;
+  font-weight: 600;
+}
+
+.group-rom .first-part.bot {
+  background: #d3d3b4;
   color: #6a6a6a;
   font-weight: 600;
 }

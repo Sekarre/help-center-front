@@ -8,7 +8,7 @@
             <div class="chat-room-head">
             </div>
             <div #messagesTracker class="group-rom" *ngFor="let msg of messages">
-              <div class="first-part odd">{{msg.senderName ?? "Unknown" }}</div>
+              <div [ngClass]="checkIfBotMessage(msg.senderId)  ? 'first-part bot' : 'first-part odd'">{{msg.senderName ?? "Unknown" }}</div>
               <div class="second-part">{{msg.message}}</div>
               <div class="third-part">{{msg.createdDateTime}}</div>
             </div>

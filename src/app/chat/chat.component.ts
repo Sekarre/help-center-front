@@ -5,6 +5,7 @@ import {ChatMessage} from "../domain/ChatMessage";
 // @ts-ignore
 import SockJS from "sockjs-client";
 import {Stomp} from "@stomp/stompjs";
+import {botId} from "../constants/Properties";
 
 @Component({
   selector: 'app-chat',
@@ -15,7 +16,7 @@ export class ChatComponent implements OnInit {
 
   input: any;
   @ViewChild('content') content!: ElementRef;
-  @ViewChildren('messagesTracker') messagessTracker!: QueryList<any>;
+  @ViewChildren('messagesTracker') messagesTracker!: QueryList<any>;
   private isConnected: boolean = false;
   public messages: ChatMessage[] = [];
   private stompClient: any;
@@ -29,14 +30,13 @@ export class ChatComponent implements OnInit {
 
   ngOnInit(): void {
     this.activatedRoute.paramMap.subscribe(params => {
-      console.log(params);
       this.initializeWebSocketConnection(String(params.get('channelId')));
     })
   }
 
   ngAfterViewInit() {
     this.scrollToBottom();
-    this.messagessTracker.changes.subscribe(this.scrollToBottom);
+    this.messagesTracker.changes.subscribe(this.scrollToBottom);
   }
 
   initializeWebSocketConnection(channelId: string) {
@@ -70,5 +70,9 @@ export class ChatComponent implements OnInit {
     try {
       this.content.nativeElement.scrollTop = this.content.nativeElement.scrollHeight;
     } catch (err) {}
+  }
+
+  checkIfBotMessage(senderId: number) {
+    return senderId == botId;
   }
 }
