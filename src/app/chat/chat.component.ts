@@ -43,11 +43,13 @@ export class ChatComponent implements OnInit {
     this.channelId = channelId;
     const ws = new SockJS(this.serverUrl, this.chatService.getAuthHeader());
     this.stompClient = Stomp.over(ws);
+    this.stompClient.debug = () => {};
+
     this.stompClient.connect(this.chatService.getAuthHeader(), (frame: any) => {
       this.isConnected = true;
-      this.stompClient.subscribe('/room/private/' + this.channelId,  (message: any) => {
+      this.stompClient.subscribe('/topic/private.' + this.channelId,  (message: any) => {
         if (message.body) {
-          console.log(this.messages);
+          // console.log(this.messages);
           let parsedMessage: ChatMessage = <ChatMessage>JSON.parse(message.body);
           this.messages.push(parsedMessage);
         }
@@ -63,7 +65,7 @@ export class ChatComponent implements OnInit {
   }
 
   sendMessage(message: string) {
-    this.stompClient.send('/chat-app/private-chat-room/' + this.channelId, {}, JSON.stringify({'message': message}));
+    this.stompClient.send('/app/private-chat-room.' + this.channelId, {}, JSON.stringify({'message': message}));
   }
 
   scrollToBottom = () => {
