@@ -14,7 +14,7 @@ import {botId} from "../constants/Properties";
 })
 export class ChatComponent implements OnInit {
 
-  input: any;
+  public input: any;
   @ViewChild('content') content!: ElementRef;
   @ViewChildren('messagesTracker') messagesTracker!: QueryList<any>;
   private isConnected: boolean = false;
@@ -22,6 +22,7 @@ export class ChatComponent implements OnInit {
   private stompClient: any;
   private channelId: string = "";
   private serverUrl: string = 'http://localhost:8080/websocket';
+  private fileBase64!: string | ArrayBuffer | null;
 
   constructor(public chatService: ChatService,
               private activatedRoute: ActivatedRoute) {
@@ -49,7 +50,6 @@ export class ChatComponent implements OnInit {
       this.isConnected = true;
       this.stompClient.subscribe('/topic/private.' + this.channelId,  (message: any) => {
         if (message.body) {
-          // console.log(this.messages);
           let parsedMessage: ChatMessage = <ChatMessage>JSON.parse(message.body);
           this.messages.push(parsedMessage);
         }
@@ -58,14 +58,18 @@ export class ChatComponent implements OnInit {
   }
 
   getAndSendMessage() {
-    if (this.input) {
+    if (this.input || this.fileBase64) {
       this.sendMessage(this.input);
       this.input = '';
     }
   }
 
   sendMessage(message: string) {
-    this.stompClient.send('/app/private-chat-room.' + this.channelId, {}, JSON.stringify({'message': message}));
+    let content = JSON.stringify({'message': message, 'file': this.fileBase64});
+    // console.log(content);
+
+    this.stompClient.send('/app/private-chat-room.' + this.channelId, {}, content);
+    this.fileBase64 = null;
   }
 
   scrollToBottom = () => {
@@ -76,5 +80,15 @@ export class ChatComponent implements OnInit {
 
   checkIfBotMessage(senderId: number) {
     return senderId == botId;
+  }
+
+
+  onChange(event: any) {
+    let file = event.target.files[0];
+    let reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => {
+      this.fileBase64 = reader.result;
+    };
   }
 }

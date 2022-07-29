@@ -3,4 +3,5 @@ export interface ChatMessage {
   senderName: string;
   createdDateTime: string;
   senderId: number;
+  file: string;
 }

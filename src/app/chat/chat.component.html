@@ -9,8 +9,14 @@
             </div>
             <div #messagesTracker class="group-rom" *ngFor="let msg of messages">
               <div [ngClass]="checkIfBotMessage(msg.senderId)  ? 'first-part bot' : 'first-part odd'">{{msg.senderName ?? "Unknown" }}</div>
-              <div class="second-part">{{msg.message}}</div>
+              <div class="second-part">{{msg.message}}
+              </div>
               <div class="third-part">{{msg.createdDateTime}}</div>
+              <div class="img-space">
+                <ng-container *ngIf="msg.file;">
+                  <img [src]="msg.file" style="width: 150px;height:150px;" />
+                </ng-container>
+              </div>
             </div>
           </aside>
         </div>
@@ -21,6 +27,7 @@
         </div>
         <div class="btn-group">
           <button class="btn btn-danger" data-original-title="" title="" (click)="getAndSendMessage()">Send</button>
+          <input class="form-control" type="file" accept="image/*" (change)="onChange($event)">
         </div>
       </footer>
     </div>
