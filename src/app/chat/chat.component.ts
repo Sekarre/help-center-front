@@ -31,7 +31,8 @@ export class ChatComponent implements OnInit {
 
   ngOnInit(): void {
     this.activatedRoute.paramMap.subscribe(params => {
-      this.initializeWebSocketConnection(String(params.get('channelId')));
+      this.channelId = String(params.get('channelId'));
+      this.initializeWebSocketConnection();
     })
   }
 
@@ -40,11 +41,17 @@ export class ChatComponent implements OnInit {
     this.messagesTracker.changes.subscribe(this.scrollToBottom);
   }
 
-  initializeWebSocketConnection(channelId: string) {
-    this.channelId = channelId;
-    const ws = new SockJS(this.serverUrl, this.chatService.getAuthHeader());
-    this.stompClient = Stomp.over(ws);
+  ngOnDestroy(): void {
+    console.log('Disconnect');
+    this.stompClient.disconnect();
+  }
+
+  initializeWebSocketConnection() {
+    this.stompClient = Stomp.over(() => {
+      return new SockJS(this.serverUrl, this.chatService.getAuthHeader());
+    });
     this.stompClient.debug = () => {};
+    this.stompClient.reconnect_delay = 5000;
 
     this.stompClient.connect(this.chatService.getAuthHeader(), (frame: any) => {
       this.isConnected = true;
