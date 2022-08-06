@@ -11,6 +11,7 @@ import {RouterModule} from "@angular/router";
 import {TokenInterceptorService} from "./services/token-interceptor.service";
 import {AppRoutingModule} from "./app-routing.module";
 import { ChatListComponent } from './chat-list/chat-list.component';
+import { NotificationComponent } from './notification/notification.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { ChatListComponent } from './chat-list/chat-list.component';
     ChatComponent,
     LoginComponent,
     AlertComponent,
-    ChatListComponent
+    ChatListComponent,
+    NotificationComponent
   ],
   imports: [
     BrowserModule,

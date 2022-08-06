@@ -6,6 +6,8 @@ import {ChatMessage} from "../domain/ChatMessage";
 import SockJS from "sockjs-client";
 import {Stomp} from "@stomp/stompjs";
 import {botId} from "../constants/Properties";
+import {environment} from "../../environments/environment";
+import {ApiPaths} from "../ApiPaths";
 
 @Component({
   selector: 'app-chat',
@@ -21,7 +23,7 @@ export class ChatComponent implements OnInit {
   public messages: ChatMessage[] = [];
   private stompClient: any;
   private channelId: string = "";
-  private serverUrl: string = 'http://localhost:8080/websocket';
+  private serverUrl: string = environment.baseUrl + ApiPaths.WebSocket;
   private fileBase64!: string | ArrayBuffer | null;
 
   constructor(public chatService: ChatService,
@@ -55,7 +57,7 @@ export class ChatComponent implements OnInit {
 
     this.stompClient.connect(this.chatService.getAuthHeader(), (frame: any) => {
       this.isConnected = true;
-      this.stompClient.subscribe('/topic/private.' + this.channelId,  (message: any) => {
+      this.stompClient.subscribe(ApiPaths.WebSocketSubscribe + this.channelId,  (message: any) => {
         if (message.body) {
           let parsedMessage: ChatMessage = <ChatMessage>JSON.parse(message.body);
           this.messages.push(parsedMessage);
@@ -73,9 +75,7 @@ export class ChatComponent implements OnInit {
 
   sendMessage(message: string) {
     let content = JSON.stringify({'message': message, 'file': this.fileBase64});
-    // console.log(content);
-
-    this.stompClient.send('/app/private-chat-room.' + this.channelId, {}, content);
+    this.stompClient.send(ApiPaths.WebSocketSend + this.channelId, {}, content);
     this.fileBase64 = null;
   }
 

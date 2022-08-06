@@ -8,6 +8,8 @@ import {
 } from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {AuthService} from './auth.service';
+import {environment} from "../../environments/environment";
+import {ApiPaths} from "../ApiPaths";
 
 @Injectable({
   providedIn: 'root'
@@ -19,14 +21,13 @@ export class TokenInterceptorService implements HttpInterceptor {
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
-    const loginEndpoint = 'http://localhost:8080/api/auth/';
+    const loginEndpoint = environment.baseUrl + ApiPaths.Auth;
 
     if (request.urlWithParams.endsWith(loginEndpoint)) {
       return next.handle(request);
     }
 
     request = request.clone({
-
       setHeaders: {
         Authorization: `Bearer ${this.auth.getToken()}`
       }

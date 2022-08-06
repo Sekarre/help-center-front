@@ -2,11 +2,13 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {UserCredentials} from '../domain/UserCredentials';
 import {Observable} from 'rxjs';
+import {environment} from "../../environments/environment";
+import {ApiPaths} from "../ApiPaths";
 
 @Injectable({providedIn: 'root'})
 export class AuthService {
 
-  authUrl = 'http://localhost:8080/api/v1/auth/login';
+  authUrl = environment.baseUrl + ApiPaths.Auth;
 
   constructor(private http: HttpClient) {
   }
@@ -29,14 +31,15 @@ export class AuthService {
     return sessionStorage.getItem('token')!;
   }
 
+
+  setToken(token: string) {
+    sessionStorage.setItem('token', token);
+  }
+
   getAuthHeaders(): any {
     return {
       'Authorization' : 'Bearer ' + this.getToken()
     };
-  }
-
-  setToken(token: string) {
-    sessionStorage.setItem('token', token);
   }
 }
 

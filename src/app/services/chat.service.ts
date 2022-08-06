@@ -8,13 +8,15 @@ import {HttpClient} from "@angular/common/http";
 import {map, Observable} from "rxjs";
 import {ActivatedRoute} from "@angular/router";
 import {ChatInfo} from "../domain/ChatInfo";
+import {environment} from "../../environments/environment";
+import {ApiPaths} from "../ApiPaths";
 
 @Injectable({
   providedIn: 'root'
 })
 export class ChatService {
 
-  private BASE_URL: string = "http://localhost:8080/api/v1/chat-info";
+  private BASE_URL: string = environment.baseUrl + ApiPaths.Chat;
 
   constructor(private authService: AuthService,
               private httpClient: HttpClient) {
