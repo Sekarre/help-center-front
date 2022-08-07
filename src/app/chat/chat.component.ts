@@ -35,7 +35,8 @@ export class ChatComponent implements OnInit {
     this.activatedRoute.paramMap.subscribe(params => {
       this.channelId = String(params.get('channelId'));
       this.initializeWebSocketConnection();
-    })
+      this.loadAllMessages();
+    });
   }
 
   ngAfterViewInit() {
@@ -44,7 +45,7 @@ export class ChatComponent implements OnInit {
   }
 
   ngOnDestroy(): void {
-    console.log('Disconnect');
+    console.log('Disconnected');
     this.stompClient.disconnect();
   }
 
@@ -63,6 +64,12 @@ export class ChatComponent implements OnInit {
           this.messages.push(parsedMessage);
         }
       });
+    });
+  }
+
+  loadAllMessages() {
+    this.chatService.getChaMessages(this.channelId).subscribe(data => {
+      this.messages = data;
     });
   }
 

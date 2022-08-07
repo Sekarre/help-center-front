@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ChatService} from "../services/chat.service";
 import {Router} from "@angular/router";
 import {ChatInfo} from "../domain/ChatInfo";
