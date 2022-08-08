@@ -1,0 +1,22 @@
+<p>
+  <mat-toolbar>
+    <span>Chat App</span>
+    <span class="example-spacer"></span>
+    <button mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon">
+      <mat-icon>favorite</mat-icon>
+    </button>
+    <button mat-icon-button class="example-icon" aria-label="Example icon-button with share icon">
+      <mat-icon>share</mat-icon>
+    </button>
+    <button mat-button [matMenuTriggerFor]="menu">
+      <mat-icon matBadge="{{allEventsCount}}" matBadgeColor="warn" fontIcon="notifications"></mat-icon>
+    </button>
+    <mat-menu  #menu="matMenu">
+      <button *ngFor="let e of events | keyvalue" mat-menu-item (click)="setEventAsRead(e.key)" [routerLink]="['/chat', e.key]">
+        <span matBadgePosition="before" matBadgeSize="small" matBadge="{{e.value.length}}" matBadgeOverlap="false">New messages on chat: {{e.key}}</span>
+      </button>
+    </mat-menu>
+  </mat-toolbar>
+</p>
+
+

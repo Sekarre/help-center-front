@@ -32,7 +32,7 @@ export class ChatService {
     return this.httpClient.get<ChatInfo[]>(this.BASE_URL);
   }
 
-  getChaMessages(channelId: string): Observable<ChatMessage[]> {
+  getChatMessages(channelId: string): Observable<ChatMessage[]> {
     return this.httpClient.get<ChatMessage[]>(this.BASE_URL + "/" + channelId);
   }
 

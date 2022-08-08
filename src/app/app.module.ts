@@ -11,7 +11,13 @@ import {RouterModule} from "@angular/router";
 import {TokenInterceptorService} from "./services/token-interceptor.service";
 import {AppRoutingModule} from "./app-routing.module";
 import { ChatListComponent } from './chat-list/chat-list.component';
-import { NotificationComponent } from './notification/notification.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { NavbarComponent } from './navbar/navbar.component';
+import {MatToolbarModule} from "@angular/material/toolbar";
+import {MatIconModule} from "@angular/material/icon";
+import {MatButtonModule} from "@angular/material/button";
+import {MatMenuModule} from "@angular/material/menu";
+import {MatBadgeModule} from "@angular/material/badge";
 
 @NgModule({
   declarations: [
@@ -20,16 +26,22 @@ import { NotificationComponent } from './notification/notification.component';
     LoginComponent,
     AlertComponent,
     ChatListComponent,
-    NotificationComponent
+    NavbarComponent
   ],
-  imports: [
-    BrowserModule,
-    RouterModule,
-    HttpClientModule,
-    FormsModule,
-    ReactiveFormsModule,
-    AppRoutingModule
-  ],
+    imports: [
+        BrowserModule,
+        RouterModule,
+        HttpClientModule,
+        FormsModule,
+        ReactiveFormsModule,
+        AppRoutingModule,
+        BrowserAnimationsModule,
+        MatToolbarModule,
+        MatIconModule,
+        MatButtonModule,
+        MatMenuModule,
+        MatBadgeModule
+    ],
   providers: [  {
     provide: HTTP_INTERCEPTORS,
     useClass: TokenInterceptorService,

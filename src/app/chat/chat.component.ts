@@ -68,7 +68,7 @@ export class ChatComponent implements OnInit {
   }
 
   loadAllMessages() {
-    this.chatService.getChaMessages(this.channelId).subscribe(data => {
+    this.chatService.getChatMessages(this.channelId).subscribe(data => {
       this.messages = data;
     });
   }
