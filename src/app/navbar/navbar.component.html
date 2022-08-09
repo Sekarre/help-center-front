@@ -1,7 +1,10 @@
 <p>
   <mat-toolbar>
     <span>Chat App</span>
-    <span class="example-spacer"></span>
+    <span class="spacer-small"></span>
+    <a mat-button [routerLink]="['/chat-channels']">Issues</a>
+    <a mat-button [routerLink]="['/issue/new']" >New issue</a>
+    <span class="spacer-large"></span>
     <button mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon">
       <mat-icon>favorite</mat-icon>
     </button>

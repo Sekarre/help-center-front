@@ -4,6 +4,7 @@ import {LoginComponent} from "./login/login.component";
 import {ChatComponent} from "./chat/chat.component";
 import {AuthGuard} from "./guards/AuthGuard";
 import {ChatListComponent} from "./chat-list/chat-list.component";
+import {NewIssueComponent} from "./new-issue/new-issue.component";
 
 const routes: Routes = [
   {
@@ -20,6 +21,11 @@ const routes: Routes = [
   {
     path: 'chat/:channelId',
     component: ChatComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'issue/new',
+    component: NewIssueComponent,
     canActivate: [AuthGuard]
   }
 ];

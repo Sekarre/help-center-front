@@ -3,7 +3,7 @@ import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
 import {AlertService} from "../services/alert.service";
 import {AuthService} from "../services/auth.service";
-import {COMMON_ERROR_MESSAGE} from "../domain/CommonMessages";
+import {COMMON_ERROR_MESSAGE} from "../CommonMessages";
 
 @Component({
   selector: 'app-login',

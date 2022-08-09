@@ -1,6 +1,6 @@
 import {Component, ElementRef, OnInit, QueryList, ViewChild, ViewChildren} from '@angular/core';
 import {ChatService} from "../services/chat.service";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, NavigationStart, Router} from "@angular/router";
 import {ChatMessage} from "../domain/ChatMessage";
 // @ts-ignore
 import SockJS from "sockjs-client";
@@ -27,13 +27,14 @@ export class ChatComponent implements OnInit {
   private fileBase64!: string | ArrayBuffer | null;
 
   constructor(public chatService: ChatService,
-              private activatedRoute: ActivatedRoute) {
-
+              private activatedRoute: ActivatedRoute,
+              private router: Router) {
   }
 
   ngOnInit(): void {
     this.activatedRoute.paramMap.subscribe(params => {
       this.channelId = String(params.get('channelId'));
+      this.subscribeToRouterEvents();
       this.initializeWebSocketConnection();
       this.loadAllMessages();
     });
@@ -46,7 +47,7 @@ export class ChatComponent implements OnInit {
 
   ngOnDestroy(): void {
     console.log('Disconnected');
-    this.stompClient.disconnect();
+    this.disconnectStomp();
   }
 
   initializeWebSocketConnection() {
@@ -55,10 +56,9 @@ export class ChatComponent implements OnInit {
     });
     this.stompClient.debug = () => {};
     this.stompClient.reconnect_delay = 5000;
-
     this.stompClient.connect(this.chatService.getAuthHeader(), (frame: any) => {
       this.isConnected = true;
-      this.stompClient.subscribe(ApiPaths.WebSocketSubscribe + this.channelId,  (message: any) => {
+      this.stompClient.subscribe(ApiPaths.WebSocketSubscribe + this.channelId, (message: any) => {
         if (message.body) {
           let parsedMessage: ChatMessage = <ChatMessage>JSON.parse(message.body);
           this.messages.push(parsedMessage);
@@ -89,7 +89,8 @@ export class ChatComponent implements OnInit {
   scrollToBottom = () => {
     try {
       this.content.nativeElement.scrollTop = this.content.nativeElement.scrollHeight;
-    } catch (err) {}
+    } catch (err) {
+    }
   }
 
   checkIfBotMessage(senderId: number) {
@@ -104,5 +105,18 @@ export class ChatComponent implements OnInit {
     reader.onload = () => {
       this.fileBase64 = reader.result;
     };
+  }
+
+  subscribeToRouterEvents() {
+    this.router.events.subscribe((event) => {
+      if (event instanceof NavigationStart) {
+        this.disconnectStomp();
+      }
+    })
+  }
+
+  private disconnectStomp() {
+    this.stompClient.disconnect();
+    this.isConnected = false;
   }
 }

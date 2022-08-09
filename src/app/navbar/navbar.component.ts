@@ -45,7 +45,6 @@ export class NavbarComponent implements OnInit {
   }
 
   parseEventJson(message: MessageEvent): SseEventMessage {
-    console.log('parsing json');
     let parsedJson = JSON.parse(message.data);
     return new SseEventMessage(parsedJson[0].data, parsedJson[1].data);
   }
