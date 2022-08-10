@@ -26,6 +26,10 @@ import { IssuesListComponent } from './issues-list/issues-list.component';
 import {MatListModule} from "@angular/material/list";
 import {MatCardModule} from "@angular/material/card";
 import { SingleIssueComponent } from './single-issue/single-issue.component';
+import {MatExpansionModule} from "@angular/material/expansion";
+import { DialogComponent } from './dialog/dialog.component';
+import {MatDialog, MatDialogModule} from "@angular/material/dialog";
+import {MatGridListModule} from "@angular/material/grid-list";
 
 @NgModule({
   declarations: [
@@ -37,7 +41,8 @@ import { SingleIssueComponent } from './single-issue/single-issue.component';
     NavbarComponent,
     NewIssueComponent,
     IssuesListComponent,
-    SingleIssueComponent
+    SingleIssueComponent,
+    DialogComponent
   ],
   imports: [
     BrowserModule,
@@ -56,7 +61,10 @@ import { SingleIssueComponent } from './single-issue/single-issue.component';
     MatInputModule,
     MatSelectModule,
     MatListModule,
-    MatCardModule
+    MatCardModule,
+    MatExpansionModule,
+    MatDialogModule,
+    MatGridListModule
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,

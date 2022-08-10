@@ -5,6 +5,7 @@ export class Issue {
   lastName!: string;
   email!: string;
   issue!: string;
+  channelId!: string;
   issueTypeId!: number;
   issueStatus!: string;
   createdAt!: string;
