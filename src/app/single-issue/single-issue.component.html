@@ -1,0 +1,21 @@
+<mat-card class="center">
+  <mat-card-subtitle align="end">created by: {{issue.firstName}} {{issue.lastName}}</mat-card-subtitle>
+  <mat-card-title>{{issue.title}}
+    <mat-card-subtitle></mat-card-subtitle>
+    <mat-card-subtitle>created at: {{issue.createdAt}}</mat-card-subtitle>
+    <mat-card-subtitle>updated at: {{issue.updatedAt}}</mat-card-subtitle>
+  </mat-card-title>
+  <mat-divider inset></mat-divider>
+  <mat-card-subtitle></mat-card-subtitle>
+  <mat-card-content>
+    <p>This card indeterminates progress bar.</p>
+    <p>{{issue.issue}}</p>
+  </mat-card-content>
+  <mat-divider inset></mat-divider>
+  <mat-divider inset></mat-divider>
+  <mat-divider inset></mat-divider>
+  <mat-card-actions>
+    <button mat-button>Add comment</button>
+    <button mat-button>Join to chat</button>
+  </mat-card-actions>
+</mat-card>

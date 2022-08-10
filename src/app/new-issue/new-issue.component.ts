@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {IssueType} from "../domain/IssueType";
 import {IssueService} from "../services/issue.service";
-import {NewIssue} from "../domain/NewIssue";
+import {Issue} from "../domain/Issue";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-new-issue',
@@ -11,18 +12,14 @@ import {NewIssue} from "../domain/NewIssue";
 })
 export class NewIssueComponent implements OnInit {
 
-  issueTypes: IssueType[] = [
-    {value: 'game-0', viewValue: 'Game issues'},
-    {value: 'client-1', viewValue: 'Client issues'},
-    {value: 'other-2', viewValue: 'Other'},
-  ];
+  issueTypes: IssueType[] = [];
 
   public newIssueFormGroup: FormGroup;
 
-  constructor(private issueService: IssueService,
-              private formBuilder: FormBuilder) {
+  constructor(private router: Router, private issueService: IssueService, private formBuilder: FormBuilder) {
     this.newIssueFormGroup = this.formBuilder.group({
       email: new FormControl('', [Validators.required, Validators.email]),
+      title: new FormControl('', [Validators.required]),
       firstName: new FormControl('', [Validators.required]),
       lastName: new FormControl('', [Validators.required]),
       issueType: new FormControl('', [Validators.required]),
@@ -31,8 +28,7 @@ export class NewIssueComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // this.getIssueTypes();
-
+    this.getIssueTypes();
   }
 
   getIssueTypes() {
@@ -43,16 +39,19 @@ export class NewIssueComponent implements OnInit {
 
   createNewIssue() {
     if (this.newIssueFormGroup.valid) {
-      this.issueService.createNewIssue(this.createNewIssueFromForm()).subscribe(() => {});
+      this.issueService.createNewIssue(this.createNewIssueFromForm()).subscribe(() => {
+        this.router.navigateByUrl('/issues');
+      });
     }
   }
 
-  private createNewIssueFromForm(): NewIssue {
-    const newIssue = new NewIssue();
+  private createNewIssueFromForm(): Issue {
+    const newIssue = new Issue();
+    newIssue.title = this.newIssueFormGroup.get('title')?.value;
     newIssue.email = this.newIssueFormGroup.get('email')?.value;
     newIssue.firstName = this.newIssueFormGroup.get('firstName')?.value;
     newIssue.lastName = this.newIssueFormGroup.get('lastName')?.value;
-    newIssue.issueType = this.newIssueFormGroup.get('issueType')?.value;
+    newIssue.issueTypeId = this.newIssueFormGroup.get('issueType')?.value;
     newIssue.issue = this.newIssueFormGroup.get('issue')?.value;
     return newIssue;
   }

@@ -1,54 +1,82 @@
-<div class="center ">
-<form class="example-form" [formGroup]="newIssueFormGroup" (ngSubmit)="createNewIssue()">
-  <table class="example-full-width" ><tr>
-    <td><mat-form-field appearance="fill">
-      <mat-label>Issue type</mat-label>
-      <mat-select required formControlName="issueType">
-        <mat-option *ngFor="let issueType of issueTypes" [value]="issueType.value">
-          {{issueType.viewValue}}
-        </mat-option>
-      </mat-select>
-      <mat-error *ngIf="this.newIssueFormGroup.get('issueType')?.errors?.['required']">
-        Field is required
-      </mat-error>
-    </mat-form-field></td>
-  </tr></table>
-  <table class="example-full-width" cellspacing="0"><tr>
-    <td><mat-form-field class="example-full-width" appearance="fill">
-      <mat-label>First name</mat-label>
-      <input matInput required formControlName="firstName">
-      <mat-error *ngIf="this.newIssueFormGroup.get('firstName')?.errors?.['required']">
-        Field is required
-      </mat-error>
-    </mat-form-field></td>
-    <td><mat-form-field class="example-full-width" appearance="fill">
-      <mat-label>Last name</mat-label>
-      <input matInput required formControlName="lastName">
-      <mat-error *ngIf="this.newIssueFormGroup.get('lastName')?.errors?.['required']">
-        Field is required
-      </mat-error>
-    </mat-form-field></td>
-    <td>
-      <mat-form-field class="example-full-width" appearance="fill">
-        <mat-label>Email</mat-label>
-        <input type="email" matInput formControlName="email" placeholder="Ex. pat@example.com" >
-        <mat-error *ngIf="this.newIssueFormGroup.get('email')?.errors?.['required']">
-          Please enter a valid email address
+<mat-card class="center">
+  <div class="text-center">
+    <mat-card-title>New issue</mat-card-title>
+  </div>
+  <form class="width-70 center" [formGroup]="newIssueFormGroup" (ngSubmit)="createNewIssue()">
+    <div mat-subheader>Contact info</div>
+    <mat-divider></mat-divider>
+    <mat-divider></mat-divider>
+    <table class="issue-form" cellspacing="0">
+      <tr>
+        <td>
+          <mat-form-field class="full-width" appearance="fill">
+            <mat-label>First name</mat-label>
+            <input matInput required formControlName="firstName">
+            <mat-error *ngIf="this.newIssueFormGroup.get('firstName')?.errors?.['required']">
+              Field is required
+            </mat-error>
+          </mat-form-field>
+        </td>
+        <td>
+          <mat-form-field class="full-width" appearance="fill">
+            <mat-label>Last name</mat-label>
+            <input matInput required formControlName="lastName">
+            <mat-error *ngIf="this.newIssueFormGroup.get('lastName')?.errors?.['required']">
+              Field is required
+            </mat-error>
+          </mat-form-field>
+        </td>
+        <td>
+          <mat-form-field class="full-width" appearance="fill">
+            <mat-label>Email</mat-label>
+            <input type="email" matInput formControlName="email" placeholder="Ex. pat@example.com">
+            <mat-error *ngIf="this.newIssueFormGroup.get('email')?.errors?.['required']">
+              Please enter a valid email address
+            </mat-error>
+          </mat-form-field>
+        </td>
+      </tr>
+    </table>
+    <div mat-subheader class="full-width">Issue</div>
+    <mat-divider></mat-divider>
+    <mat-divider></mat-divider>
+    <table class="issue-form">
+      <tr>
+        <td>
+          <mat-form-field class="full-width" appearance="fill">
+            <mat-label>Title</mat-label>
+            <input matInput required formControlName="title">
+            <mat-error *ngIf="this.newIssueFormGroup.get('title')?.errors?.['required']">
+              Field is required
+            </mat-error>
+          </mat-form-field>
+        </td>
+        <td>
+          <mat-form-field appearance="fill">
+            <mat-label>Issue type</mat-label>
+            <mat-select required formControlName="issueType">
+              <mat-option *ngFor="let issueType of issueTypes" [value]="issueType.id">
+                {{issueType.name}}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="this.newIssueFormGroup.get('issueType')?.errors?.['required']">
+              Field is required
+            </mat-error>
+          </mat-form-field>
+        </td>
+      </tr>
+    </table>
+    <p>
+      <mat-form-field class="issue-form" appearance="fill">
+        <mat-label>Issue</mat-label>
+        <textarea matInput required formControlName="issue"></textarea>
+        <mat-error *ngIf="this.newIssueFormGroup.get('issue')?.errors?.['required']">
+          Field is required
         </mat-error>
       </mat-form-field>
-    </td>
-  </tr></table>
-  <p>
-    <mat-form-field class="example-full-width" appearance="fill">
-      <mat-label>Issue</mat-label>
-      <textarea matInput required formControlName="issue"></textarea>
-      <mat-error *ngIf="this.newIssueFormGroup.get('issue')?.errors?.['required']">
-        Field is required
-      </mat-error>
-    </mat-form-field>
-  </p>
-  <div class="example-button-row">
-  <button mat-raised-button >Create</button>
-  </div>
-</form>
-</div>
+    </p>
+    <div class="issue-button-row">
+      <button mat-raised-button>Create</button>
+    </div>
+  </form>
+</mat-card>

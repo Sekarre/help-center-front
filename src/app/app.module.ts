@@ -22,6 +22,10 @@ import {NewIssueComponent} from './new-issue/new-issue.component';
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
 import {MatSelectModule} from "@angular/material/select";
+import { IssuesListComponent } from './issues-list/issues-list.component';
+import {MatListModule} from "@angular/material/list";
+import {MatCardModule} from "@angular/material/card";
+import { SingleIssueComponent } from './single-issue/single-issue.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +35,9 @@ import {MatSelectModule} from "@angular/material/select";
     AlertComponent,
     ChatListComponent,
     NavbarComponent,
-    NewIssueComponent
+    NewIssueComponent,
+    IssuesListComponent,
+    SingleIssueComponent
   ],
   imports: [
     BrowserModule,
@@ -48,7 +54,9 @@ import {MatSelectModule} from "@angular/material/select";
     MatBadgeModule,
     MatFormFieldModule,
     MatInputModule,
-    MatSelectModule
+    MatSelectModule,
+    MatListModule,
+    MatCardModule
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,

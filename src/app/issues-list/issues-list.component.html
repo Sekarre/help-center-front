@@ -1,0 +1,9 @@
+<mat-selection-list [multiple]="false">
+  <div mat-subheader>All issues</div>
+  <mat-list-option  *ngFor="let issue of issues" [routerLink]="['/issues', issue.id]">
+    <mat-icon mat-list-icon>comment</mat-icon>
+    <div mat-line>{{issue.title}}</div>
+    <div mat-line> last update: {{issue.updatedAt}} </div>
+  </mat-list-option>
+  <mat-divider></mat-divider>
+</mat-selection-list>

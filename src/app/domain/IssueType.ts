@@ -1,4 +1,4 @@
 export interface IssueType {
-  value: string;
-  viewValue: string;
+  id: string;
+  name: string;
 }

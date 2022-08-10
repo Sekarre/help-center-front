@@ -1,0 +1,10 @@
+.example-card {
+  max-width: 80%;
+}
+
+.center {
+  margin: auto;
+  width: 60%;
+  padding: 5em;
+}
+
