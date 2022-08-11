@@ -5,7 +5,7 @@ import {environment} from "../../environments/environment";
 import {ApiPaths} from "../ApiPaths";
 import {Observable} from "rxjs";
 import {IssueType} from "../domain/IssueType";
-import {Issue} from "../domain/Issue";
+import {Issue, IssueStatusChange} from "../domain/Issue";
 
 @Injectable({
   providedIn: 'root'
@@ -21,6 +21,10 @@ export class IssueService {
     return this.httpClient.get<IssueType[]>(this.BASE_URL + "/types");
   }
 
+  getIssueStatusTypes(): Observable<string[]> {
+    return this.httpClient.get<string[]>(this.BASE_URL + "/issue-statuses");
+  }
+
   getAllIssuesWithStatus(status: string): Observable<Issue[]> {
     let params = new HttpParams().set('status', status);
     return this.httpClient.get<Issue[]>(this.BASE_URL, {params: params})
@@ -32,6 +36,12 @@ export class IssueService {
 
   getSingleIssue(id: number): Observable<Issue> {
     return this.httpClient.get<Issue>(this.BASE_URL + "/" + id);
+  }
+
+  changeIssueStatus(issueId: number, issueStatusChange: IssueStatusChange): Observable<any> {
+    const headers = {'content-type': 'application/json'}
+    console.log(JSON.stringify(issueStatusChange));
+    return this.httpClient.patch(this.BASE_URL + "/" + issueId, JSON.stringify(issueStatusChange), {headers});
   }
 
   createNewIssue(newIssue: Issue): Observable<any> {

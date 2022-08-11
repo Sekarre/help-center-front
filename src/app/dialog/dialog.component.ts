@@ -1,5 +1,6 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
+import {Dialog} from "@angular/cdk/dialog";
 
 @Component({
   selector: 'app-dialog',
@@ -14,11 +15,16 @@ export class DialogComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  onNoClick(): void {
-    this.dialogRef.close();
+  onSendPressed(): void {
+    let msg = {
+      content: this.data.content,
+      toSend: true
+    }
+    this.dialogRef.close(msg);
   }
 }
 
 export interface DialogData {
-  content: string
+  content: string,
+  toSend: boolean
 }

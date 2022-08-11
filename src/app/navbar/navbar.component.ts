@@ -65,4 +65,8 @@ export class NavbarComponent implements OnInit {
       this.events.delete(channelId)}
     );
   }
+
+  isUserAuthenticated(): boolean {
+    return this.authService.isUserAuthenticated();
+  }
 }

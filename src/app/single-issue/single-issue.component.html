@@ -1,38 +1,37 @@
 <div class="center">
-  <mat-card>
-    <mat-card-subtitle align="end">Created by: {{issue.firstName}} {{issue.lastName}}</mat-card-subtitle>
-    <mat-card-subtitle align="end">Status: {{issue.issueStatus}}</mat-card-subtitle>
-    <mat-card-title>{{issue.title}}
+  <div class="row-cols-1">
+    <mat-card >
+      <mat-card-subtitle align="end">Created by: {{issue.firstName}} {{issue.lastName}}</mat-card-subtitle>
+      <mat-card-subtitle align="end">Status: {{issue.issueStatus}}</mat-card-subtitle>
+      <mat-card-title>{{issue.title}}
+        <mat-card-subtitle></mat-card-subtitle>
+        <mat-card-subtitle>created at: {{issue.createdAt}}</mat-card-subtitle>
+        <mat-card-subtitle>updated at: {{issue.updatedAt}}</mat-card-subtitle>
+      </mat-card-title>
+      <mat-divider inset></mat-divider>
       <mat-card-subtitle></mat-card-subtitle>
-      <mat-card-subtitle>created at: {{issue.createdAt}}</mat-card-subtitle>
-      <mat-card-subtitle>updated at: {{issue.updatedAt}}</mat-card-subtitle>
-    </mat-card-title>
-    <mat-divider inset></mat-divider>
-    <mat-card-subtitle></mat-card-subtitle>
-    <mat-card-content>
-      <p>Description:</p>
-      <p>{{issue.issue}}</p>
-    </mat-card-content>
-    <mat-divider inset></mat-divider>
-    <mat-divider inset></mat-divider>
-    <mat-form-field>
-      <mat-label>Status type</mat-label>
-      <mat-select >
-        <mat-option *ngFor="let statusType of statusTypes" [value]="statusType.id">
-          {{statusType.name}}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-    <button mat-button (click)="changeStatus()">Change status</button>
-  </mat-card>
+      <mat-card-content>
+        <p>Description:</p>
+        <p>{{issue.issue}}</p>
+      </mat-card-content>
+      <mat-divider inset></mat-divider>
+      <mat-divider inset></mat-divider>
+      <mat-form-field>
+        <mat-label>Status type</mat-label>
+        <mat-select [(ngModel)]="status">
+          <mat-option  *ngFor="let statusType of statusTypes" [value]="statusType">
+            {{statusType}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <button mat-button (click)="openDialogForStatus()">Change status</button>
+      <mat-card-actions align="end">
+        <button mat-button (click)="openDialogForComment()">Add comment</button>
+        <button mat-button (click)="joinChat()">Join chat</button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
   <mat-grid-list cols="2" rowHeight="50px"></mat-grid-list>
-  <mat-card>
-    <mat-card-actions align="end">
-      <button mat-button (click)="openDialog()">Add comment</button>
-      <button mat-button (click)="joinChat()">Join chat</button>
-    </mat-card-actions>
-  </mat-card>
-  <mat-divider inset></mat-divider>
   <mat-accordion>
     <mat-expansion-panel expanded>
       <mat-expansion-panel-header>
@@ -43,7 +42,7 @@
         </mat-panel-description>
       </mat-expansion-panel-header>
       <div class="group-rom" *ngFor="let cmt of comments">
-        <div class="first-part odd"> {{cmt.fullName}}</div>
+        <div [ngClass]="checkForStatusChangeInfoComment(cmt)  ? 'first-part bot' : 'first-part odd'"> {{cmt.fullName}}</div>
         <div class="second-part">{{cmt.content}}
         </div>
         <div class="third-part">{{cmt.createdAt}}</div>

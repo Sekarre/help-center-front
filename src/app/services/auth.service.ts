@@ -27,6 +27,10 @@ export class AuthService {
     sessionStorage.removeItem('key');
   }
 
+  isUserAuthenticated(): boolean {
+    return !!this.getToken();
+  }
+
   getToken(): string {
     return sessionStorage.getItem('token')!;
   }

@@ -1,14 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import {Issue} from "../domain/Issue";
+import {Issue, IssueStatusChange} from "../domain/Issue";
 import {IssueService} from "../services/issue.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {ChatService} from "../services/chat.service";
 import {ChatMessage} from "../domain/ChatMessage";
 import {CommentService} from "../services/comment.service";
-import {Comment} from "../domain/Comment";
+import {Comment, CommentCreate} from "../domain/Comment";
 import {MatDialog} from "@angular/material/dialog";
 import {DialogComponent} from "../dialog/dialog.component";
-import {StatusType} from "../domain/StatusType";
 
 @Component({
   selector: 'app-single-issue',
@@ -21,12 +20,8 @@ export class SingleIssueComponent implements OnInit {
   public issueId!: number;
   public chatMessages!: ChatMessage[];
   public comments!: Comment[];
-  public isMouseClick: boolean = false;
-
-  statusTypes: StatusType[] = [
-    {id: 1, name: 'Closed'},
-    {id: 2, name: 'Rejected'},
-  ]
+  public status!: string;
+  statusTypes: string[] = [];
 
   constructor(private issueService: IssueService, private chatService: ChatService, private commentService: CommentService,
               private activeRoute: ActivatedRoute, private router: Router, private dialog: MatDialog) { }
@@ -39,6 +34,7 @@ export class SingleIssueComponent implements OnInit {
         if (this.issue.channelId) {
           this.getChatLogs();
         }
+        this.getIssueStatusType()
         this.getComments();
       });
     });
@@ -52,36 +48,54 @@ export class SingleIssueComponent implements OnInit {
     this.commentService.getIssueComments(this.issueId).subscribe((data) => this.comments = data);
   }
 
+  getIssueStatusType() {
+    this.issueService.getIssueStatusTypes().subscribe((data) => this.statusTypes = data);
+  }
+
+
   joinChat() {
     this.chatService.joinChat(this.issue.channelId).subscribe((data) => {
       this.router.navigateByUrl('/chat/' + this.issue.channelId);
     });
   }
 
-  openDialog(): void {
+  openDialogForComment(): void {
     const dialogRef = this.dialog.open(DialogComponent, {
       width: '700px',
       height: '400px',
       data: {}
     });
 
-    dialogRef.backdropClick().subscribe(() => {
-      this.isMouseClick = true;
-    })
-
     dialogRef.afterClosed().subscribe(result => {
-      if (!this.isMouseClick) {
-        let comment = new Comment();
-        comment.content = result;
-        console.log(comment);
+      if (result && result.toSend) {
+        let comment = new CommentCreate();
+        comment.content = result.content;
         this.commentService.createNewComment(comment, this.issueId).subscribe(() => this.getComments());
       }
-      this.isMouseClick = false;
     });
   }
 
-  changeStatus() {
-    //todo
+  openDialogForStatus(): void {
+    const dialogRef = this.dialog.open(DialogComponent, {
+      width: '700px',
+      height: '400px',
+      data: {}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result && result.toSend) {
+        let issueStatusChange = new IssueStatusChange();
+        issueStatusChange.comment = new CommentCreate();
+        issueStatusChange.comment.content = result.content;
+        issueStatusChange.status = this.status;
+        this.issueService.changeIssueStatus(this.issueId, issueStatusChange).subscribe(() => this.ngOnInit());
+      }
+    });
+  }
+
+  checkForStatusChangeInfoComment(cmt: Comment) {
+    return !!this.statusTypes.find(s => s == cmt.issueStatus);
+
   }
 }
 

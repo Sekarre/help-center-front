@@ -1,3 +1,5 @@
+import {CommentCreate} from "./Comment";
+
 export class Issue {
   id!: number;
   title!: string;
@@ -10,4 +12,9 @@ export class Issue {
   issueStatus!: string;
   createdAt!: string;
   updatedAt!: string;
+}
+
+export class IssueStatusChange {
+  status!: string;
+  comment!: CommentCreate;
 }

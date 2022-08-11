@@ -4,7 +4,7 @@ import {HttpClient} from "@angular/common/http";
 import {environment} from "../../environments/environment";
 import {ApiPaths} from "../ApiPaths";
 import {Observable} from "rxjs";
-import {Comment} from "../domain/Comment";
+import {Comment, CommentCreate} from "../domain/Comment";
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +21,7 @@ export class CommentService {
     return this.httpClient.get<Comment[]>(this.BASE_URL + "/" + issueId);
   }
 
-  createNewComment(comment: Comment, issueId: number): Observable<any> {
+  createNewComment(comment: CommentCreate, issueId: number): Observable<any> {
     const headers = {'content-type': 'application/json'}
     return this.httpClient.post(this.BASE_URL + "/" + issueId, JSON.stringify(comment), {headers});
   }
