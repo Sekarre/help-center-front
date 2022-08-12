@@ -1,7 +1,22 @@
-.user_name{
-  font-size:14px;
+.user_name {
+  font-size: 14px;
   font-weight: bold;
 }
-.comments-list .media{
+
+.comments-list .media {
   padding-top: 1em;
+  margin-top: 1em;
+}
+
+.comments-list .media-reply {
+  padding: 1em;
+  margin: 1.5em;
+  border-left: .35rem solid #fcdb5e;
+  border-top: 1px solid #eee;
+  border-right: 1px solid #eee;
+  border-bottom: 1px solid #eee;
+}
+
+.small-margin {
+  margin-top: 1em;
 }

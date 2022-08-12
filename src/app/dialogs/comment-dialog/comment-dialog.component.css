@@ -8,3 +8,11 @@
 .example-full-width {
   width: 100%;
 }
+
+.user_name{
+  font-size:14px;
+  font-weight: bold;
+}
+.comments-list .media{
+  padding-top: 1em;
+}

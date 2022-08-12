@@ -13,11 +13,21 @@
               <p class="pull-right"><small>{{cmt.createdAt}}</small></p>
               <a class="media-left">
               </a>
+              <h4 class="media-heading user_name">{{cmt.fullName}}</h4>
+              <div *ngIf="cmt.replyComment" class="media-reply bg-light">
+                <p class="pull-right"><small>{{cmt.replyComment.createdAt}}</small></p>
+                <a class="media-left">
+                </a>
+                <div class="media-body">
+                  <h4 class="media-heading user_name">{{cmt.replyComment.fullName}}</h4>
+                  {{cmt.replyComment.content}}
+                </div>
+              </div>
               <div class="media-body">
-                <h4 class="media-heading user_name">{{cmt.fullName}}</h4>
                 {{cmt.content}}
-                <p>
-                  <button mat-button (click)="replyToComment()">Reply</button></p>
+                <p class="small-margin">
+                  <button mat-button color="primary" (click)="replyToComment(cmt)">Reply</button>
+                </p>
               </div>
               <mat-divider></mat-divider>
             </div>
@@ -27,6 +37,6 @@
     </div>
   </mat-card-content>
   <mat-card-actions align="end">
-    <button mat-button (click)="openDialogForComment()" >Add comment</button>
+    <button mat-button (click)="openDialogForComment()">Add comment</button>
   </mat-card-actions>
 </mat-card>

@@ -7,7 +7,8 @@ import {ChatMessage} from "../domain/ChatMessage";
 import {CommentService} from "../services/comment.service";
 import {Comment, CommentCreate} from "../domain/Comment";
 import {MatDialog} from "@angular/material/dialog";
-import {DialogComponent} from "../dialog/dialog.component";
+import {CommentDialogComponent} from "../dialogs/comment-dialog/comment-dialog.component";
+import {ChatDialogComponent} from "../dialogs/chat-dialog/chat-dialog.component";
 
 @Component({
   selector: 'app-single-issue',
@@ -19,7 +20,6 @@ export class SingleIssueComponent implements OnInit {
   public issue!: Issue;
   public issueId!: number;
   public chatMessages!: ChatMessage[];
-  public comments!: Comment[];
   public status!: string;
   statusTypes: string[] = [];
 
@@ -35,7 +35,6 @@ export class SingleIssueComponent implements OnInit {
           this.getChatLogs();
         }
         this.getIssueStatusType()
-        this.getComments();
       });
     });
   }
@@ -44,14 +43,9 @@ export class SingleIssueComponent implements OnInit {
     this.chatService.getChatMessages(this.issue.channelId).subscribe((data) => this.chatMessages = data);
   }
 
-  getComments() {
-    this.commentService.getIssueComments(this.issueId).subscribe((data) => this.comments = data);
-  }
-
   getIssueStatusType() {
     this.issueService.getIssueStatusTypes().subscribe((data) => this.statusTypes = data);
   }
-
 
   joinChat() {
     this.chatService.joinChat(this.issue.channelId).subscribe((data) => {
@@ -60,9 +54,9 @@ export class SingleIssueComponent implements OnInit {
   }
 
   openDialogForStatus(): void {
-    const dialogRef = this.dialog.open(DialogComponent, {
+    const dialogRef = this.dialog.open(CommentDialogComponent, {
       width: '700px',
-      height: '400px',
+      height: '350px',
       data: {}
     });
 
@@ -80,9 +74,12 @@ export class SingleIssueComponent implements OnInit {
     });
   }
 
-  checkForStatusChangeInfoComment(cmt: Comment) {
-    return !!this.statusTypes.find(s => s == cmt.issueStatus);
-
+  openDialogForChatLogs(): void {
+    this.dialog.open(ChatDialogComponent, {
+      width: '700px',
+      height: '400px',
+      data: {channelId: this.issue.channelId}
+    });
   }
 }
 

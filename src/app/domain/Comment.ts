@@ -2,7 +2,7 @@ export class Comment {
   id!: number;
   fullName!: string;
   content!: string;
-  replyCommentId!: string;
+  replyComment!: Comment;
   createdAt!: string;
   issueStatus!: string;
 }

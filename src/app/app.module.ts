@@ -27,10 +27,11 @@ import {MatListModule} from "@angular/material/list";
 import {MatCardModule} from "@angular/material/card";
 import { SingleIssueComponent } from './single-issue/single-issue.component';
 import {MatExpansionModule} from "@angular/material/expansion";
-import { DialogComponent } from './dialog/dialog.component';
+import { CommentDialogComponent } from './dialogs/comment-dialog/comment-dialog.component';
 import {MatDialog, MatDialogModule} from "@angular/material/dialog";
 import {MatGridListModule} from "@angular/material/grid-list";
 import { CommentsComponent } from './comments/comments.component';
+import { ChatDialogComponent } from './dialogs/chat-dialog/chat-dialog.component';
 
 @NgModule({
   declarations: [
@@ -43,8 +44,9 @@ import { CommentsComponent } from './comments/comments.component';
     NewIssueComponent,
     IssuesListComponent,
     SingleIssueComponent,
-    DialogComponent,
-    CommentsComponent
+    CommentDialogComponent,
+    CommentsComponent,
+    ChatDialogComponent
   ],
   imports: [
     BrowserModule,

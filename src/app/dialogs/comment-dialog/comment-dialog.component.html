@@ -1,0 +1,26 @@
+<h1 mat-dialog-title class="text-center">Add new comment</h1>
+<mat-card *ngIf="replyComment">
+  <mat-card-actions align="start">Reply to:</mat-card-actions>
+  <mat-card-content>
+    <div class="media">
+      <p class="pull-right"><small>{{replyComment.createdAt}}</small></p>
+      <a class="media-left">
+      </a>
+      <div class="media-body">
+        <h4 class="media-heading user_name">{{replyComment.fullName}}</h4>
+        {{replyComment.content}}
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>
+<mat-divider></mat-divider>
+<mat-grid-list cols="2" rowHeight="50px"></mat-grid-list>
+<div mat-dialog-content>
+  <mat-form-field class="example-full-width" appearance="fill">
+    <mat-label>Write a comment</mat-label>
+    <textarea matInput [(ngModel)]="data.content" style="height: 150px"></textarea>
+  </mat-form-field>
+</div>
+<div mat-dialog-actions align="end">
+  <button mat-button (click)="onSendPressed()">Send</button>
+</div>

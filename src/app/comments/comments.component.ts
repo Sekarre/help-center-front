@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {CommentService} from "../services/comment.service";
 import {ActivatedRoute} from "@angular/router";
 import {Comment, CommentCreate} from "../domain/Comment";
-import {DialogComponent} from "../dialog/dialog.component";
+import {CommentDialogComponent, DialogData} from "../dialogs/comment-dialog/comment-dialog.component";
 import {MatDialog} from "@angular/material/dialog";
 
 @Component({
@@ -15,12 +15,13 @@ export class CommentsComponent implements OnInit {
   issueId: number = -1;
   comments: Comment[] = [];
 
-  constructor(private commentService: CommentService, private activeRoute: ActivatedRoute, private dialog: MatDialog) { }
+  constructor(private commentService: CommentService, private activeRoute: ActivatedRoute, private dialog: MatDialog) {
+  }
 
   ngOnInit(): void {
     this.activeRoute.paramMap.subscribe(params => {
-      this.issueId = Number(params.get('issueId'));
-      this.getComments();
+        this.issueId = Number(params.get('issueId'));
+        this.getComments();
       }
     );
 
@@ -38,12 +39,39 @@ export class CommentsComponent implements OnInit {
     });
   }
 
-  replyToComment() {
+  replyToComment(cmt: Comment) {
 
+    const dialogRef = this.dialog.open(CommentDialogComponent, {
+      width: '700px',
+      height: '400px',
+      data: {
+        replyComment: {
+          id: cmt.id,
+          createdAt: cmt.createdAt,
+          content: cmt.content,
+          fullName: cmt.fullName
+        }
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result && result.toSend) {
+        let comment = new CommentCreate();
+        comment.content = result.content;
+        if (result.replyComment) {
+          comment.replyCommentId = result.replyComment.id;
+        }
+        this.commentService.createNewComment(comment, this.issueId).subscribe(() => this.getComments());
+      }
+    });
   }
 
   openDialogForComment(): void {
-    const dialogRef = this.dialog.open(DialogComponent, {
+    this.createDialog();
+  }
+
+  private createDialog() {
+    const dialogRef = this.dialog.open(CommentDialogComponent, {
       width: '700px',
       height: '400px',
       data: {}
