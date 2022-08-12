@@ -6,6 +6,7 @@ import {EventMessagesService} from "../services/event-messages.service";
 import {EventNotification} from "../domain/EventNotification";
 import {Router} from "@angular/router";
 import {EventNotificationPathResolver} from "../util/EventNotificationPathResolver";
+import {EventNotificationMessageFactory} from "../util/EventNotificationMessageFactory";
 
 @Component({
   selector: 'app-navbar',
@@ -95,5 +96,9 @@ export class NavbarComponent implements OnInit {
 
   getEventTypeIdFromMapKey(mapKey: string) {
     return mapKey.split(";")[1];
+  }
+
+  getNotificationMessage(destinationId: string, eventType: string) {
+    return EventNotificationMessageFactory.getEventNotificationMessage(destinationId, eventType);
   }
 }

@@ -6,6 +6,7 @@ import {ApiPaths} from "../ApiPaths";
 import {Observable} from "rxjs";
 import {IssueType} from "../domain/IssueType";
 import {Issue, IssueStatusChange} from "../domain/Issue";
+import {GroupedIssue} from "../domain/GroupedIssue";
 
 @Injectable({
   providedIn: 'root'
@@ -32,6 +33,10 @@ export class IssueService {
 
   getAllIssues(): Observable<Issue[]> {
     return this.httpClient.get<Issue[]>(this.BASE_URL)
+  }
+
+  getAllIssuesGrouped(): Observable<GroupedIssue> {
+    return this.httpClient.get<GroupedIssue>(this.BASE_URL + "/grouped")
   }
 
   getSingleIssue(id: number): Observable<Issue> {

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {IssueService} from "../services/issue.service";
-import {Issue} from "../domain/Issue";
+import {GroupedIssue} from "../domain/GroupedIssue";
 
 @Component({
   selector: 'app-issues-list',
@@ -9,14 +9,13 @@ import {Issue} from "../domain/Issue";
 })
 export class IssuesListComponent implements OnInit {
 
-  issues: Issue[] = [];
-
+  public issueGroup!: GroupedIssue;
 
   constructor(private issueService: IssueService) { }
 
   ngOnInit(): void {
-    this.issueService.getAllIssuesWithStatus('PENDING').subscribe((data) => {
-      this.issues = data;
+    this.issueService.getAllIssuesGrouped().subscribe((data) => {
+      this.issueGroup = data;
     })
   }
 }
