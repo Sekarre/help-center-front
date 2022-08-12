@@ -4,6 +4,8 @@ import {ApiPaths} from "../ApiPaths";
 import {AuthService} from "../services/auth.service";
 import {EventMessagesService} from "../services/event-messages.service";
 import {EventNotification} from "../domain/EventNotification";
+import {Router} from "@angular/router";
+import {EventNotificationPathResolver} from "../util/EventNotificationPathResolver";
 
 @Component({
   selector: 'app-navbar',
@@ -18,7 +20,7 @@ export class NavbarComponent implements OnInit {
   public allEventsCount: number = 0;
 
   constructor(private authService: AuthService,
-              private eventMessagesService: EventMessagesService) { }
+              private eventMessagesService: EventMessagesService, private router: Router) { }
 
   ngOnInit(): void {
     this.connect();
@@ -67,11 +69,12 @@ export class NavbarComponent implements OnInit {
     this.events.set(this.getKeyFromEventNotification(eventMessage), eventNotifications);
   }
 
-  setEventAsRead(destinationId: string, eventType: string) {
+  navigateToDestination(destinationId: string, eventType: string) {
     this.eventMessagesService.markAsEventsRead(destinationId, eventType).subscribe((data) => {
       this.allEventsCount -= this.events.get(this.getKeyFromDestinationAndEventType(destinationId, eventType))!.length;
-      this.events.delete(this.getKeyFromDestinationAndEventType(destinationId, eventType))}
-    );
+      this.events.delete(this.getKeyFromDestinationAndEventType(destinationId, eventType))
+      this.router.navigateByUrl(EventNotificationPathResolver.resolvePathByEventTypeAndDestination(eventType, destinationId));
+    });
   }
 
   isUserAuthenticated(): boolean {

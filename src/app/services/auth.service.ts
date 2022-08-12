@@ -24,7 +24,6 @@ export class AuthService {
 
   logout() {
     sessionStorage.removeItem('token');
-    sessionStorage.removeItem('key');
   }
 
   isUserAuthenticated(): boolean {

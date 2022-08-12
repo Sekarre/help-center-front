@@ -17,8 +17,7 @@
     </button>
     <mat-menu #menu="matMenu">
       <button *ngFor="let e of events | keyvalue" mat-menu-item
-              (click)="setEventAsRead(getDestinationIdFromMapKey(e.key), getEventTypeIdFromMapKey(e.key))"
-              [routerLink]="['/chat', getDestinationIdFromMapKey(e.key)]">
+              (click)="navigateToDestination(getDestinationIdFromMapKey(e.key), getEventTypeIdFromMapKey(e.key))">
         <span matBadgePosition="before" matBadgeSize="small" matBadge="{{e.value.length}}" matBadgeOverlap="false">New messages on chat: {{getDestinationIdFromMapKey(e.key)}}</span>
       </button>
     </mat-menu>
