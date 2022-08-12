@@ -1,0 +1,12 @@
+<h1 mat-dialog-title class="text-center">Chat logs of channel: {{channelId}}</h1>
+  <div class="group-rom" *ngFor="let msg of chatMessages">
+    <div class="first-part odd"> {{msg.senderName}}</div>
+    <div class="second-part">{{msg.message}}
+    </div>
+    <div class="third-part">{{msg.createdDateTime}}</div>
+    <div class="img-space">
+      <ng-container *ngIf="msg.file;">
+        <img [src]="msg.file" style="width: 150px;height:150px;"/>
+      </ng-container>
+    </div>
+</div>

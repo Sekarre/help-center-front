@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {environment} from "../../environments/environment";
 import {ApiPaths} from "../ApiPaths";
-import {SseEventMessage} from "../domain/SseEventMessage";
 import {AuthService} from "../services/auth.service";
 import {EventMessagesService} from "../services/event-messages.service";
+import {EventNotification} from "../domain/EventNotification";
 
 @Component({
   selector: 'app-navbar',
@@ -14,7 +14,7 @@ export class NavbarComponent implements OnInit {
 
   private serverUrl: string = environment.baseUrl + ApiPaths.SSE;
   private source: EventSource | undefined;
-  public events: Map<string, SseEventMessage[]> = new Map<string, SseEventMessage[]>();
+  public events: Map<string, EventNotification[]> = new Map<string, EventNotification[]>();
   public allEventsCount: number = 0;
 
   constructor(private authService: AuthService,
@@ -22,6 +22,7 @@ export class NavbarComponent implements OnInit {
 
   ngOnInit(): void {
     this.connect();
+    this.getAllUnreadEventNotifications();
   }
 
   ngOnDestroy(): void {
@@ -34,7 +35,6 @@ export class NavbarComponent implements OnInit {
     this.source.addEventListener('message', message => {
       let eventMessage = this.parseEventJson(message);
       console.log(eventMessage);
-      this.allEventsCount++;
       this.updateEventMap(eventMessage);
     });
   }
@@ -44,29 +44,53 @@ export class NavbarComponent implements OnInit {
     this.source?.close();
   }
 
-  parseEventJson(message: MessageEvent): SseEventMessage {
+  getAllUnreadEventNotifications() {
+    this.eventMessagesService.getAllUnreadEventNotifications().subscribe(data => {
+      data.forEach(elem => this.updateEventMap(elem));
+    });
+  }
+
+
+  parseEventJson(message: MessageEvent): EventNotification {
     let parsedJson = JSON.parse(message.data);
-    return new SseEventMessage(parsedJson[0].data, parsedJson[1].data);
+    return new EventNotification(parsedJson[0].data, parsedJson[1].data);
   }
 
 
-  updateEventMap(eventMessage: SseEventMessage) {
-    let sseEventMessages = this.events.get(eventMessage.data);
-    if (sseEventMessages == undefined) {
-      sseEventMessages = [];
+  updateEventMap(eventMessage: EventNotification) {
+    let eventNotifications = this.events.get(this.getKeyFromEventNotification(eventMessage));
+    if (eventNotifications == undefined) {
+      eventNotifications = [];
     }
-    sseEventMessages.push(eventMessage);
-    this.events.set(eventMessage.data, sseEventMessages);
+    eventNotifications.push(eventMessage);
+    this.allEventsCount++;
+    this.events.set(this.getKeyFromEventNotification(eventMessage), eventNotifications);
   }
 
-  setEventAsRead(channelId: string) {
-    this.eventMessagesService.markAsEventsRead(channelId).subscribe((data) => {
-      this.allEventsCount -= this.events.get(channelId)!.length;
-      this.events.delete(channelId)}
+  setEventAsRead(destinationId: string, eventType: string) {
+    this.eventMessagesService.markAsEventsRead(destinationId, eventType).subscribe((data) => {
+      this.allEventsCount -= this.events.get(this.getKeyFromDestinationAndEventType(destinationId, eventType))!.length;
+      this.events.delete(this.getKeyFromDestinationAndEventType(destinationId, eventType))}
     );
   }
 
   isUserAuthenticated(): boolean {
     return this.authService.isUserAuthenticated();
+  }
+
+  getKeyFromEventNotification(eventNotification: EventNotification): string {
+    return eventNotification.destinationId + ";" + eventNotification.eventType;
+  }
+
+  getKeyFromDestinationAndEventType(destinationId: string, eventType: string): string {
+    return destinationId + ";" + eventType;
+  }
+
+  getDestinationIdFromMapKey(mapKey: string) {
+    return mapKey.split(";")[0];
+  }
+
+  getEventTypeIdFromMapKey(mapKey: string) {
+    return mapKey.split(";")[1];
   }
 }
