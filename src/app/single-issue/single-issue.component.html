@@ -26,28 +26,13 @@
       </mat-form-field>
       <button mat-button (click)="openDialogForStatus()">Change status</button>
       <mat-card-actions align="end">
-        <button mat-button (click)="openDialogForComment()">Add comment</button>
         <button mat-button (click)="joinChat()">Join chat</button>
       </mat-card-actions>
     </mat-card>
   </div>
   <mat-grid-list cols="2" rowHeight="50px"></mat-grid-list>
+  <app-comments></app-comments>
   <mat-accordion>
-    <mat-expansion-panel expanded>
-      <mat-expansion-panel-header>
-        <mat-panel-title>
-          Comments
-        </mat-panel-title>
-        <mat-panel-description>
-        </mat-panel-description>
-      </mat-expansion-panel-header>
-      <div class="group-rom" *ngFor="let cmt of comments">
-        <div [ngClass]="checkForStatusChangeInfoComment(cmt)  ? 'first-part bot' : 'first-part odd'"> {{cmt.fullName}}</div>
-        <div class="second-part">{{cmt.content}}
-        </div>
-        <div class="third-part">{{cmt.createdAt}}</div>
-      </div>
-    </mat-expansion-panel>
     <mat-expansion-panel>
       <mat-expansion-panel-header>
         <mat-panel-title>

@@ -1,0 +1,32 @@
+<mat-card>
+  <mat-card-title>Comments</mat-card-title>
+  <mat-card-content>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-8">
+          <mat-divider></mat-divider>
+          <div class="page-header">
+            <h1><small class="pull-right"></small></h1>
+          </div>
+          <div class="comments-list">
+            <div *ngFor="let cmt of comments" class="media">
+              <p class="pull-right"><small>{{cmt.createdAt}}</small></p>
+              <a class="media-left">
+              </a>
+              <div class="media-body">
+                <h4 class="media-heading user_name">{{cmt.fullName}}</h4>
+                {{cmt.content}}
+                <p>
+                  <button mat-button (click)="replyToComment()">Reply</button></p>
+              </div>
+              <mat-divider></mat-divider>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </mat-card-content>
+  <mat-card-actions align="end">
+    <button mat-button (click)="openDialogForComment()" >Add comment</button>
+  </mat-card-actions>
+</mat-card>

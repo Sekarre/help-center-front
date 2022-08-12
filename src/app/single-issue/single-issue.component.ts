@@ -59,22 +59,6 @@ export class SingleIssueComponent implements OnInit {
     });
   }
 
-  openDialogForComment(): void {
-    const dialogRef = this.dialog.open(DialogComponent, {
-      width: '700px',
-      height: '400px',
-      data: {}
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      if (result && result.toSend) {
-        let comment = new CommentCreate();
-        comment.content = result.content;
-        this.commentService.createNewComment(comment, this.issueId).subscribe(() => this.getComments());
-      }
-    });
-  }
-
   openDialogForStatus(): void {
     const dialogRef = this.dialog.open(DialogComponent, {
       width: '700px',
@@ -88,7 +72,10 @@ export class SingleIssueComponent implements OnInit {
         issueStatusChange.comment = new CommentCreate();
         issueStatusChange.comment.content = result.content;
         issueStatusChange.status = this.status;
-        this.issueService.changeIssueStatus(this.issueId, issueStatusChange).subscribe(() => this.ngOnInit());
+        this.issueService.changeIssueStatus(this.issueId, issueStatusChange).subscribe(() => {
+          this.ngOnInit();
+          this.commentService.setResetCommentSection(true);
+        });
       }
     });
   }

@@ -30,6 +30,7 @@ import {MatExpansionModule} from "@angular/material/expansion";
 import { DialogComponent } from './dialog/dialog.component';
 import {MatDialog, MatDialogModule} from "@angular/material/dialog";
 import {MatGridListModule} from "@angular/material/grid-list";
+import { CommentsComponent } from './comments/comments.component';
 
 @NgModule({
   declarations: [
@@ -42,7 +43,8 @@ import {MatGridListModule} from "@angular/material/grid-list";
     NewIssueComponent,
     IssuesListComponent,
     SingleIssueComponent,
-    DialogComponent
+    DialogComponent,
+    CommentsComponent
   ],
   imports: [
     BrowserModule,
