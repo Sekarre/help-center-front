@@ -1,28 +1,43 @@
 <div id="live-chat">
   <header class="clearfix">
     <button mat-icon-button (click)="closeChat()" class="chat-close">x</button>
-    <button mat-icon-button (click)="hideChat()" class="chat-close">__</button>
     <h4>Chat</h4>
-    <span class="chat-message-counter">3</span>
+    <!--    <span class="chat-message-counter" *ngIf="messages">{{messages.length}}</span>-->
   </header>
   <div class="chat">
-    <div class="chat-history">
-      <div class="chat-message clearfix">
+    <div #content class="chat-history" *ngIf="messages">
+      <div #messagesTracker class="chat-message clearfix" *ngFor="let msg of messages">
         <div class="chat-message-content clearfix">
-          <span class="chat-time">13:35</span>
-          <h5><strong>John Doe</strong></h5>
-          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Error, explicabo quasi ratione odio dolorum
-            harum.</p>
+          <span class="chat-time">{{msg.createdDateTime}}</span>
+          <h5 [ngClass]="checkIfBotMessage(msg.senderId)  ? 'bot' : 'user'"><strong>{{msg.senderName }}</strong></h5>
+          <p [ngClass]="checkIfBotMessage(msg.senderId)  ? 'bot' : 'user'">{{msg.message}}</p>
+          <div>
+            <ng-container *ngIf="msg.file;">
+              <img [src]="msg.file" style="width: 300px;height:100px;"/>
+            </ng-container>
+          </div>
         </div>
       </div>
       <hr>
     </div>
     <p class="chat-feedback"></p>
-    <form action="#" method="post">
-      <fieldset>
-        <input type="text" placeholder="Write message.." autofocus>
-        <input type="hidden">
-      </fieldset>
-    </form>
+    <fieldset class="row">
+      <ng-container *ngIf="fileBase64">
+        <div (mouseover)="showPreviewImageDeleteButton = true"
+             (mouseleave)="showPreviewImageDeleteButton = false" class="row">
+          <img class="preview-image" [src]="fileBase64" style="width: 300px;height:100px;"/>
+          <button mat-icon-button *ngIf="showPreviewImageDeleteButton" (click)="removeFile()">
+            <mat-icon>close</mat-icon>
+          </button>
+        </div>
+      </ng-container>
+      <textarea rows="1" type="text" class="form-control input-message" [(ngModel)]="input"
+                (keydown.enter)="getAndSendMessage()" placeholder="Write message.."></textarea>
+      <button mat-icon-button (click)="getAndSendMessage()">
+        <mat-icon>send</mat-icon>
+      </button>
+      <input [(ngModel)]="inputImage" class="form-control" type="file" accept="image/*"
+             (change)="onFileInputChange($event)">
+    </fieldset>
   </div>
 </div>

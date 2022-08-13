@@ -1,16 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, ComponentRef, OnInit, ViewChild, ViewChildren, ViewContainerRef} from '@angular/core';
 import {Issue, IssueStatusChange} from "../domain/Issue";
 import {IssueService} from "../services/issue.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {ChatService} from "../services/chat.service";
 import {ChatMessage} from "../domain/ChatMessage";
 import {CommentService} from "../services/comment.service";
-import {Comment, CommentCreate} from "../domain/Comment";
+import {CommentCreate} from "../domain/Comment";
 import {MatDialog} from "@angular/material/dialog";
 import {CommentDialogComponent} from "../dialogs/comment-dialog/comment-dialog.component";
 import {ChatDialogComponent} from "../dialogs/chat-dialog/chat-dialog.component";
-import {EventNotificationService} from "../services/event-notification.service";
-import {EventType} from "../domain/EventType";
+import {StickyChatComponent} from "../sticky-chat/sticky-chat.component";
 
 @Component({
   selector: 'app-single-issue',
@@ -19,19 +18,24 @@ import {EventType} from "../domain/EventType";
 })
 export class SingleIssueComponent implements OnInit {
 
-  public issue: Issue= new Issue();
+  public issue: Issue = new Issue();
   public issueId!: number;
   public chatMessages: ChatMessage[] = [];
   public status!: string;
-  statusTypes: string[] = [];
+  public statusTypes: string[] = [];
+  public showChat: boolean = false;
+
+  @ViewChildren('stickyChat', {read: ViewContainerRef}) ref!: ViewContainerRef;
+  private componentRef!: ComponentRef<any>;
 
   constructor(private issueService: IssueService, private chatService: ChatService, private commentService: CommentService,
-              private activeRoute: ActivatedRoute, private router: Router, private dialog: MatDialog) { }
+              private activeRoute: ActivatedRoute, private router: Router, private dialog: MatDialog) {
+  }
 
   ngOnInit(): void {
     this.activeRoute.paramMap.subscribe(params => {
       this.issueId = Number(params.get('issueId'));
-      this.issueService.getSingleIssue(this.issueId).subscribe((data) =>{
+      this.issueService.getSingleIssue(this.issueId).subscribe((data) => {
         this.issue = data;
         if (this.issue.channelId) {
           this.getChatLogs();
@@ -50,9 +54,11 @@ export class SingleIssueComponent implements OnInit {
   }
 
   joinChat() {
-    this.chatService.joinChat(this.issue.channelId).subscribe((data) => {
-      this.router.navigateByUrl('/chat/' + this.issue.channelId);
-    });
+    this.showChat = true;
+  }
+
+  destroyStickyChat() {
+    this.showChat = false;
   }
 
   openDialogForStatus(): void {
