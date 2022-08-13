@@ -9,6 +9,8 @@ import {Comment, CommentCreate} from "../domain/Comment";
 import {MatDialog} from "@angular/material/dialog";
 import {CommentDialogComponent} from "../dialogs/comment-dialog/comment-dialog.component";
 import {ChatDialogComponent} from "../dialogs/chat-dialog/chat-dialog.component";
+import {EventNotificationService} from "../services/event-notification.service";
+import {EventType} from "../domain/EventType";
 
 @Component({
   selector: 'app-single-issue',
@@ -17,9 +19,9 @@ import {ChatDialogComponent} from "../dialogs/chat-dialog/chat-dialog.component"
 })
 export class SingleIssueComponent implements OnInit {
 
-  public issue!: Issue;
+  public issue: Issue= new Issue();
   public issueId!: number;
-  public chatMessages!: ChatMessage[];
+  public chatMessages: ChatMessage[] = [];
   public status!: string;
   statusTypes: string[] = [];
 

@@ -1,0 +1,28 @@
+<div id="live-chat">
+  <header class="clearfix">
+    <button mat-icon-button (click)="closeChat()" class="chat-close">x</button>
+    <button mat-icon-button (click)="hideChat()" class="chat-close">__</button>
+    <h4>Chat</h4>
+    <span class="chat-message-counter">3</span>
+  </header>
+  <div class="chat">
+    <div class="chat-history">
+      <div class="chat-message clearfix">
+        <div class="chat-message-content clearfix">
+          <span class="chat-time">13:35</span>
+          <h5><strong>John Doe</strong></h5>
+          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Error, explicabo quasi ratione odio dolorum
+            harum.</p>
+        </div>
+      </div>
+      <hr>
+    </div>
+    <p class="chat-feedback"></p>
+    <form action="#" method="post">
+      <fieldset>
+        <input type="text" placeholder="Write message.." autofocus>
+        <input type="hidden">
+      </fieldset>
+    </form>
+  </div>
+</div>

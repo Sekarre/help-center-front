@@ -14,8 +14,7 @@ export class CommentService {
   private BASE_URL: string = environment.baseUrl + ApiPaths.Comments;
   private isResetCommentSection: Subject<boolean> = new Subject<boolean>();
 
-  constructor(private authService: AuthService,
-              private httpClient: HttpClient) { }
+  constructor(private authService: AuthService, private httpClient: HttpClient) { }
 
   getIssueComments(issueId: number): Observable<Comment[]> {
     return this.httpClient.get<Comment[]>(this.BASE_URL + "/" + issueId);

@@ -32,6 +32,8 @@ import {MatDialog, MatDialogModule} from "@angular/material/dialog";
 import {MatGridListModule} from "@angular/material/grid-list";
 import { CommentsComponent } from './comments/comments.component';
 import { ChatDialogComponent } from './dialogs/chat-dialog/chat-dialog.component';
+import { StickyChatComponent } from './sticky-chat/sticky-chat.component';
+import {MatButtonToggleModule} from "@angular/material/button-toggle";
 
 @NgModule({
   declarations: [
@@ -46,30 +48,32 @@ import { ChatDialogComponent } from './dialogs/chat-dialog/chat-dialog.component
     SingleIssueComponent,
     CommentDialogComponent,
     CommentsComponent,
-    ChatDialogComponent
+    ChatDialogComponent,
+    StickyChatComponent
   ],
-  imports: [
-    BrowserModule,
-    RouterModule,
-    HttpClientModule,
-    FormsModule,
-    ReactiveFormsModule,
-    AppRoutingModule,
-    BrowserAnimationsModule,
-    MatToolbarModule,
-    MatIconModule,
-    MatButtonModule,
-    MatMenuModule,
-    MatBadgeModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatSelectModule,
-    MatListModule,
-    MatCardModule,
-    MatExpansionModule,
-    MatDialogModule,
-    MatGridListModule
-  ],
+    imports: [
+        BrowserModule,
+        RouterModule,
+        HttpClientModule,
+        FormsModule,
+        ReactiveFormsModule,
+        AppRoutingModule,
+        BrowserAnimationsModule,
+        MatToolbarModule,
+        MatIconModule,
+        MatButtonModule,
+        MatMenuModule,
+        MatBadgeModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatSelectModule,
+        MatListModule,
+        MatCardModule,
+        MatExpansionModule,
+        MatDialogModule,
+        MatGridListModule,
+        MatButtonToggleModule
+    ],
   providers: [{
     provide: HTTP_INTERCEPTORS,
     useClass: TokenInterceptorService,

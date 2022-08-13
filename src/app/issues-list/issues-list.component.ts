@@ -1,6 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {IssueService} from "../services/issue.service";
 import {GroupedIssue} from "../domain/GroupedIssue";
+import {EventType} from "../domain/EventType";
+import {EventNotificationService} from "../services/event-notification.service";
 
 @Component({
   selector: 'app-issues-list',
@@ -9,13 +11,27 @@ import {GroupedIssue} from "../domain/GroupedIssue";
 })
 export class IssuesListComponent implements OnInit {
 
-  public issueGroup!: GroupedIssue;
+  public issueGroup: GroupedIssue = new GroupedIssue();
 
-  constructor(private issueService: IssueService) { }
+  constructor(private issueService: IssueService, private eventNotificationService: EventNotificationService) {
+  }
 
   ngOnInit(): void {
+    this.getIssuesGrouped();
+    this.listenToEventNotification();
+  }
+
+  private getIssuesGrouped() {
     this.issueService.getAllIssuesGrouped().subscribe((data) => {
       this.issueGroup = data;
-    })
+    });
+  }
+
+  private listenToEventNotification() {
+    this.eventNotificationService.getEventNotification().subscribe(data => {
+      if (EventType.NEW_ISSUE === data) {
+        this.getIssuesGrouped();
+      }
+    });
   }
 }

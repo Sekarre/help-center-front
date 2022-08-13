@@ -7,6 +7,9 @@ import {EventNotification} from "../domain/EventNotification";
 import {Router} from "@angular/router";
 import {EventNotificationPathResolver} from "../util/EventNotificationPathResolver";
 import {EventNotificationMessageFactory} from "../util/EventNotificationMessageFactory";
+import {EventNotificationService} from "../services/event-notification.service";
+import {EventType} from "../domain/EventType";
+import {EnumParser} from "../util/EnumParser";
 
 @Component({
   selector: 'app-navbar',
@@ -20,7 +23,7 @@ export class NavbarComponent implements OnInit {
   public events: Map<string, EventNotification[]> = new Map<string, EventNotification[]>();
   public allEventsCount: number = 0;
 
-  constructor(private authService: AuthService,
+  constructor(private authService: AuthService, private eventNotificationService: EventNotificationService,
               private eventMessagesService: EventMessagesService, private router: Router) { }
 
   ngOnInit(): void {
@@ -36,9 +39,10 @@ export class NavbarComponent implements OnInit {
     this.source = new EventSource(this.serverUrl + "?token=Bearer " + this.authService.getToken());
     console.log('Connecting to eventSource');
     this.source.addEventListener('message', message => {
-      let eventMessage = this.parseEventJson(message);
-      console.log(eventMessage);
-      this.updateEventMap(eventMessage);
+      let eventNotification = this.parseEventJson(message);
+      console.log(eventNotification);
+      this.updateEventMap(eventNotification);
+      this.eventNotificationService.setEventNotification(EnumParser.getEnumFromString(EventType, eventNotification.eventType));
     });
   }
 
@@ -53,12 +57,10 @@ export class NavbarComponent implements OnInit {
     });
   }
 
-
   parseEventJson(message: MessageEvent): EventNotification {
     let parsedJson = JSON.parse(message.data);
     return new EventNotification(parsedJson[0].data, parsedJson[1].data);
   }
-
 
   updateEventMap(eventMessage: EventNotification) {
     let eventNotifications = this.events.get(this.getKeyFromEventNotification(eventMessage));

@@ -1,9 +1,10 @@
 import {EventType} from "../domain/EventType";
+import {EnumParser} from "./EnumParser";
 
 export class EventNotificationMessageFactory {
 
   public static getEventNotificationMessage(destinationId: string, eventType: string): string {
-    const event : EventType = (<any>EventType)[eventType];
+    const event : EventType = EnumParser.getEnumFromString(EventType, eventType);
     switch (event) {
       case EventType.CHAT:
         return 'New chat message on: ' + destinationId;
@@ -13,6 +14,8 @@ export class EventNotificationMessageFactory {
         return 'You have been removed from chat: ' + destinationId;
       case EventType.NEW_ISSUE_COMMENT:
         return 'New comment on issue: ' + destinationId;
+      case EventType.NEW_ISSUE:
+        return 'New issues has been added';
     }
   }
 }

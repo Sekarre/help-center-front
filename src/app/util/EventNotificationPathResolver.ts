@@ -1,9 +1,10 @@
 import {EventType} from "../domain/EventType";
+import {EnumParser} from "./EnumParser";
 
 export class EventNotificationPathResolver {
 
   public static resolvePathByEventTypeAndDestination(eventType: string, destinationId: string): string {
-    const event : EventType = (<any>EventType)[eventType];
+    const event : EventType = EnumParser.getEnumFromString(EventType, eventType);
     switch (event) {
       case EventType.CHAT:
         return '/chat/' + destinationId;
@@ -13,6 +14,8 @@ export class EventNotificationPathResolver {
         return '/issues';
       case EventType.NEW_ISSUE_COMMENT:
         return '/issues/' + destinationId;
+      case EventType.NEW_ISSUE:
+        return '/issues';
     }
   }
 }
