@@ -22,6 +22,7 @@ export class NavbarComponent implements OnInit {
   private source: EventSource | undefined;
   public events: Map<string, EventNotification[]> = new Map<string, EventNotification[]>();
   public allEventsCount: number = 0;
+  public roles: string[] = []
 
   constructor(private authService: AuthService, private eventNotificationService: EventNotificationService,
               private eventMessagesService: EventMessagesService, private router: Router) { }
@@ -29,6 +30,7 @@ export class NavbarComponent implements OnInit {
   ngOnInit(): void {
     this.connect();
     this.getAllUnreadEventNotifications();
+    this.roles = this.authService.getRoles();
   }
 
   ngOnDestroy(): void {

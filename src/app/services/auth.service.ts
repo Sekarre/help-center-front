@@ -4,6 +4,7 @@ import {UserCredentials} from '../domain/UserCredentials';
 import {Observable} from 'rxjs';
 import {environment} from "../../environments/environment";
 import {ApiPaths} from "../ApiPaths";
+import jwt_decode from 'jwt-decode';
 
 @Injectable({providedIn: 'root'})
 export class AuthService {
@@ -34,9 +35,14 @@ export class AuthService {
     return sessionStorage.getItem('token')!;
   }
 
-
   setToken(token: string) {
     sessionStorage.setItem('token', token);
+  }
+
+  getRoles(): string[] {
+    const jwtDecode: any = jwt_decode(this.getToken());
+    console.log(jwtDecode.roles);
+    return jwtDecode.roles;
   }
 
   getAuthHeaders(): any {

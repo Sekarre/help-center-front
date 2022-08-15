@@ -3,40 +3,6 @@
     <mat-card-title>New issue</mat-card-title>
   </div>
   <form class="width-70 center" [formGroup]="newIssueFormGroup" (ngSubmit)="createNewIssue()">
-    <div mat-subheader>Contact info</div>
-    <mat-divider></mat-divider>
-    <mat-divider></mat-divider>
-    <table class="issue-form" cellspacing="0">
-      <tr>
-        <td>
-          <mat-form-field class="full-width" appearance="fill">
-            <mat-label>First name</mat-label>
-            <input matInput required formControlName="firstName">
-            <mat-error *ngIf="this.newIssueFormGroup.get('firstName')?.errors?.['required']">
-              Field is required
-            </mat-error>
-          </mat-form-field>
-        </td>
-        <td>
-          <mat-form-field class="full-width" appearance="fill">
-            <mat-label>Last name</mat-label>
-            <input matInput required formControlName="lastName">
-            <mat-error *ngIf="this.newIssueFormGroup.get('lastName')?.errors?.['required']">
-              Field is required
-            </mat-error>
-          </mat-form-field>
-        </td>
-        <td>
-          <mat-form-field class="full-width" appearance="fill">
-            <mat-label>Email</mat-label>
-            <input type="email" matInput formControlName="email" placeholder="Ex. pat@example.com">
-            <mat-error *ngIf="this.newIssueFormGroup.get('email')?.errors?.['required']">
-              Please enter a valid email address
-            </mat-error>
-          </mat-form-field>
-        </td>
-      </tr>
-    </table>
     <div mat-subheader class="full-width">Issue</div>
     <mat-divider></mat-divider>
     <mat-divider></mat-divider>

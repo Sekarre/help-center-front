@@ -18,10 +18,7 @@ export class NewIssueComponent implements OnInit {
 
   constructor(private router: Router, private issueService: IssueService, private formBuilder: FormBuilder) {
     this.newIssueFormGroup = this.formBuilder.group({
-      email: new FormControl('', [Validators.required, Validators.email]),
       title: new FormControl('', [Validators.required]),
-      firstName: new FormControl('', [Validators.required]),
-      lastName: new FormControl('', [Validators.required]),
       issueType: new FormControl('', [Validators.required]),
       issue: new FormControl('', [Validators.required]),
     });
@@ -48,9 +45,6 @@ export class NewIssueComponent implements OnInit {
   private createNewIssueFromForm(): Issue {
     const newIssue = new Issue();
     newIssue.title = this.newIssueFormGroup.get('title')?.value;
-    newIssue.email = this.newIssueFormGroup.get('email')?.value;
-    newIssue.firstName = this.newIssueFormGroup.get('firstName')?.value;
-    newIssue.lastName = this.newIssueFormGroup.get('lastName')?.value;
     newIssue.issueTypeId = this.newIssueFormGroup.get('issueType')?.value;
     newIssue.issue = this.newIssueFormGroup.get('issue')?.value;
     return newIssue;

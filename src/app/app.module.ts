@@ -34,6 +34,7 @@ import { CommentsComponent } from './comments/comments.component';
 import { ChatDialogComponent } from './dialogs/chat-dialog/chat-dialog.component';
 import { StickyChatComponent } from './sticky-chat/sticky-chat.component';
 import {MatButtonToggleModule} from "@angular/material/button-toggle";
+import {MatTableModule} from "@angular/material/table";
 
 @NgModule({
   declarations: [
@@ -72,7 +73,8 @@ import {MatButtonToggleModule} from "@angular/material/button-toggle";
         MatExpansionModule,
         MatDialogModule,
         MatGridListModule,
-        MatButtonToggleModule
+        MatButtonToggleModule,
+        MatTableModule
     ],
   providers: [{
     provide: HTTP_INTERCEPTORS,
