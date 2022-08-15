@@ -10,6 +10,8 @@ import {MatDialog} from "@angular/material/dialog";
 import {CommentDialogComponent} from "../dialogs/comment-dialog/comment-dialog.component";
 import {ChatDialogComponent} from "../dialogs/chat-dialog/chat-dialog.component";
 import {StickyChatComponent} from "../sticky-chat/sticky-chat.component";
+import {UserService} from "../services/user.service";
+import {AddUserIssueDialogComponent} from "../dialogs/add-user-issue-dialog/add-user-issue-dialog.component";
 
 @Component({
   selector: 'app-single-issue',
@@ -87,6 +89,24 @@ export class SingleIssueComponent implements OnInit {
       width: '700px',
       height: '400px',
       data: {channelId: this.issue.channelId}
+    });
+  }
+
+  openDialogForPersonAdd() {
+    const dialogRef = this.dialog.open(AddUserIssueDialogComponent, {
+      width: '700px',
+      height: '350px',
+      data: {}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result && result.toSend) {
+        let usersId = result.usersId;
+        this.issueService.addUsersToIssue(usersId, this.issueId).subscribe(() => {
+          //todo: alert info
+          console.log("users added");
+        });
+      }
     });
   }
 }

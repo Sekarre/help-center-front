@@ -1,0 +1,16 @@
+<h1 mat-dialog-title class="text-center">Add support member to issue</h1>
+<mat-form-field appearance="fill">
+  <mat-label>Support members</mat-label>
+  <mat-select [(ngModel)]="selectedUsers" multiple>
+    <mat-select-trigger>
+      {{users[0]?.fullName || ''}}
+      <span *ngIf="(users.length || 0) > 1" class="example-additional-selection">
+        (+{{(users.length - 1 || 0) - 1}} {{users.length - 1 === 2 ? 'other' : 'others'}})
+      </span>
+    </mat-select-trigger>
+    <mat-option *ngFor="let user of users" [value]="user">{{user.fullName}}</mat-option>
+  </mat-select>
+</mat-form-field>
+<div mat-dialog-actions align="end">
+  <button mat-button (click)="onSendPressed()">Send</button>
+</div>

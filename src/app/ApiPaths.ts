@@ -3,6 +3,7 @@ export enum ApiPaths {
   Auth = '/api/v1/auth/login',
   Issues = '/api/v1/issues',
   Comments = '/api/v1/comments',
+  Users = '/api/v1/users',
   SSE = '/api/v1/sse/events',
   EventMessages = '/api/v1/event-notification',
   WebSocket = '/websocket',

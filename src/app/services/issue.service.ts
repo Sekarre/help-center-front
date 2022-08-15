@@ -15,8 +15,7 @@ export class IssueService {
 
   private BASE_URL: string = environment.baseUrl + ApiPaths.Issues;
 
-  constructor(private authService: AuthService,
-              private httpClient: HttpClient) { }
+  constructor(private authService: AuthService, private httpClient: HttpClient) { }
 
   getIssueTypes(): Observable<IssueType[]> {
     return this.httpClient.get<IssueType[]>(this.BASE_URL + "/types");
@@ -53,5 +52,12 @@ export class IssueService {
     const headers = {'content-type': 'application/json'}
 
     return this.httpClient.post(this.BASE_URL, JSON.stringify(newIssue), {headers});
+  }
+
+  addUsersToIssue(usersId: number[], issueId: number): Observable<any> {
+    const headers = {'content-type': 'application/json'}
+
+    console.log(usersId);
+    return this.httpClient.put(this.BASE_URL + "/" + issueId + "/user-add", JSON.stringify(usersId), {headers});
   }
 }

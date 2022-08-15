@@ -35,6 +35,7 @@ import { ChatDialogComponent } from './dialogs/chat-dialog/chat-dialog.component
 import { StickyChatComponent } from './sticky-chat/sticky-chat.component';
 import {MatButtonToggleModule} from "@angular/material/button-toggle";
 import {MatTableModule} from "@angular/material/table";
+import { AddUserIssueDialogComponent } from './dialogs/add-user-issue-dialog/add-user-issue-dialog.component';
 
 @NgModule({
   declarations: [
@@ -50,7 +51,8 @@ import {MatTableModule} from "@angular/material/table";
     CommentDialogComponent,
     CommentsComponent,
     ChatDialogComponent,
-    StickyChatComponent
+    StickyChatComponent,
+    AddUserIssueDialogComponent
   ],
     imports: [
         BrowserModule,
