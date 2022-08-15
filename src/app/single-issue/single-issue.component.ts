@@ -12,6 +12,7 @@ import {ChatDialogComponent} from "../dialogs/chat-dialog/chat-dialog.component"
 import {StickyChatComponent} from "../sticky-chat/sticky-chat.component";
 import {UserService} from "../services/user.service";
 import {AddUserIssueDialogComponent} from "../dialogs/add-user-issue-dialog/add-user-issue-dialog.component";
+import {ShowParticipantsDialogComponent} from "../dialogs/show-participants-dialog/show-participants-dialog.component";
 
 @Component({
   selector: 'app-single-issue',
@@ -107,6 +108,14 @@ export class SingleIssueComponent implements OnInit {
           console.log("users added");
         });
       }
+    });
+  }
+
+  openDialogForParticipants() {
+    this.dialog.open(ShowParticipantsDialogComponent, {
+      width: '700px',
+      height: '350px',
+      data: {issueId: this.issueId}
     });
   }
 }

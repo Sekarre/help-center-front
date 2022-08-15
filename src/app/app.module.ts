@@ -36,6 +36,7 @@ import { StickyChatComponent } from './sticky-chat/sticky-chat.component';
 import {MatButtonToggleModule} from "@angular/material/button-toggle";
 import {MatTableModule} from "@angular/material/table";
 import { AddUserIssueDialogComponent } from './dialogs/add-user-issue-dialog/add-user-issue-dialog.component';
+import { ShowParticipantsDialogComponent } from './dialogs/show-participants-dialog/show-participants-dialog.component';
 
 @NgModule({
   declarations: [
@@ -52,7 +53,8 @@ import { AddUserIssueDialogComponent } from './dialogs/add-user-issue-dialog/add
     CommentsComponent,
     ChatDialogComponent,
     StickyChatComponent,
-    AddUserIssueDialogComponent
+    AddUserIssueDialogComponent,
+    ShowParticipantsDialogComponent
   ],
     imports: [
         BrowserModule,

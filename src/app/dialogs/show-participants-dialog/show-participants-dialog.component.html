@@ -1,0 +1,9 @@
+<mat-selection-list [multiple]="false" disabled>
+  <div mat-subheader>Participants</div>
+  <div *ngIf="participants">
+    <mat-list-option *ngFor="let prt of participants">
+      <mat-icon mat-list-icon>comment</mat-icon>
+      <div mat-line >{{prt.fullName}}</div>
+    </mat-list-option>
+  </div>
+</mat-selection-list>

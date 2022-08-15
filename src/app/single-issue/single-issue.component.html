@@ -9,10 +9,10 @@
           <mat-icon>person_add</mat-icon>
           <span>add person</span>
         </button>
-<!--        <button mat-menu-item>-->
-<!--          <mat-icon>notifications_off</mat-icon>-->
-<!--          <span>Disable alerts</span>-->
-<!--        </button>-->
+        <button mat-menu-item (click)="openDialogForParticipants()">
+          <mat-icon>person</mat-icon>
+          <span>Show participants</span>
+        </button>
       </mat-menu>
       <mat-card-subtitle align="end">Created by: {{issue.firstName}} {{issue.lastName}}</mat-card-subtitle>
       <mat-card-subtitle align="end">Status: {{issue.issueStatus}}</mat-card-subtitle>

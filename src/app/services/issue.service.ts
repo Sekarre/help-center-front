@@ -7,6 +7,7 @@ import {Observable} from "rxjs";
 import {IssueType} from "../domain/IssueType";
 import {Issue, IssueStatusChange} from "../domain/Issue";
 import {GroupedIssue} from "../domain/GroupedIssue";
+import {User} from "../domain/User";
 
 @Injectable({
   providedIn: 'root'
@@ -56,8 +57,10 @@ export class IssueService {
 
   addUsersToIssue(usersId: number[], issueId: number): Observable<any> {
     const headers = {'content-type': 'application/json'}
-
-    console.log(usersId);
     return this.httpClient.put(this.BASE_URL + "/" + issueId + "/user-add", JSON.stringify(usersId), {headers});
+  }
+
+  getIssueParticipants(issueId: number): Observable<User[]> {
+    return this.httpClient.get<User[]>(this.BASE_URL + "/" + issueId + "/participants");
   }
 }
