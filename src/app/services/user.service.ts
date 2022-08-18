@@ -19,4 +19,9 @@ export class UserService {
     let params = new HttpParams().set('roleName', roleName);
     return this.httpClient.get<User[]>(this.BASE_URL, {params: params});
   }
+
+  public getUsersForIssue(roleName: string, issueId: number): Observable<User[]> {
+    let params = new HttpParams().set('roleName', roleName).set("issueId", issueId);
+    return this.httpClient.get<User[]>(this.BASE_URL + "/issue", {params: params});
+  }
 }

@@ -9,8 +9,6 @@ import {CommentCreate} from "../domain/Comment";
 import {MatDialog} from "@angular/material/dialog";
 import {CommentDialogComponent} from "../dialogs/comment-dialog/comment-dialog.component";
 import {ChatDialogComponent} from "../dialogs/chat-dialog/chat-dialog.component";
-import {StickyChatComponent} from "../sticky-chat/sticky-chat.component";
-import {UserService} from "../services/user.service";
 import {AddUserIssueDialogComponent} from "../dialogs/add-user-issue-dialog/add-user-issue-dialog.component";
 import {ShowParticipantsDialogComponent} from "../dialogs/show-participants-dialog/show-participants-dialog.component";
 
@@ -97,7 +95,7 @@ export class SingleIssueComponent implements OnInit {
     const dialogRef = this.dialog.open(AddUserIssueDialogComponent, {
       width: '700px',
       height: '350px',
-      data: {}
+      data: {issueId: this.issueId}
     });
 
     dialogRef.afterClosed().subscribe(result => {

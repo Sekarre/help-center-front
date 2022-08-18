@@ -1,7 +1,6 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {UserService} from "../../services/user.service";
-import {FormControl} from "@angular/forms";
 import {User} from "../../domain/User";
 import {RoleNames} from "../../domain/RoleNames";
 
@@ -14,13 +13,15 @@ export class AddUserIssueDialogComponent implements OnInit {
 
   selectedUsers: User[] = [];
   users: User[] = [];
+  issueId: number = -1;
 
   constructor(public dialogRef: MatDialogRef<AddUserIssueDialogComponent>,
-              @Inject(MAT_DIALOG_DATA) public data: any, private userService: UserService) {
+              @Inject(MAT_DIALOG_DATA) public data: DialogInput, private userService: UserService) {
+    this.issueId = data.issueId;
   }
 
   ngOnInit(): void {
-    this.userService.getUsers(RoleNames.SUPPORT).subscribe((data) => {
+    this.userService.getUsersForIssue(RoleNames.SUPPORT, this.issueId).subscribe((data) => {
       this.users = data;
     });
   }
@@ -38,4 +39,8 @@ export class AddUserIssueDialogComponent implements OnInit {
 export interface DialogReply {
   toSend: boolean;
   usersId: number[];
+}
+
+export interface DialogInput {
+  issueId: number
 }
