@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 
 import { EventNotificationService } from './event-notification.service';
 
-describe('EventNotificationService', () => {
+describe('EventMessagesService', () => {
   let service: EventNotificationService;
 
   beforeEach(() => {

@@ -12,6 +12,7 @@ export class Issue {
   issueStatus!: string;
   createdAt!: string;
   updatedAt!: string;
+  eventNotificationCount!: number;
 }
 
 export class IssueStatusChange {

@@ -2,14 +2,15 @@ import {Component, OnInit} from '@angular/core';
 import {environment} from "../../environments/environment";
 import {ApiPaths} from "../ApiPaths";
 import {AuthService} from "../services/auth.service";
-import {EventMessagesService} from "../services/event-messages.service";
+import {EventNotificationService} from "../services/event-notification.service";
 import {EventNotification} from "../domain/EventNotification";
 import {Router} from "@angular/router";
 import {EventNotificationPathResolver} from "../util/EventNotificationPathResolver";
 import {EventNotificationMessageFactory} from "../util/EventNotificationMessageFactory";
-import {EventNotificationService} from "../services/event-notification.service";
+import {EventNotificationListenerService} from "../services/listeners/event-notification-listener.service";
 import {EventType} from "../domain/EventType";
 import {EnumParser} from "../util/EnumParser";
+import {NavbarListenerService} from "../services/listeners/navbar-listener.service";
 
 @Component({
   selector: 'app-navbar',
@@ -24,13 +25,23 @@ export class NavbarComponent implements OnInit {
   public allEventsCount: number = 0;
   public roles: string[] = []
 
-  constructor(private authService: AuthService, private eventNotificationService: EventNotificationService,
-              private eventMessagesService: EventMessagesService, private router: Router) { }
+  constructor(private authService: AuthService, private eventNotificationService: EventNotificationListenerService,
+              private eventMessagesService: EventNotificationService, private navbarListenerService: NavbarListenerService,
+              private router: Router) { }
 
   ngOnInit(): void {
     this.connect();
     this.getAllUnreadEventNotifications();
     this.roles = this.authService.getRoles();
+    this.listenToNavbarReloadCalls();
+  }
+
+  private listenToNavbarReloadCalls() {
+    this.navbarListenerService.getNavbarRemoveNotificationsCalls().subscribe((data) => {
+      if (data) {
+        this.removeFromEventMap(data.destinationId, data.eventType);
+      }
+    });
   }
 
   ngOnDestroy(): void {
@@ -75,11 +86,15 @@ export class NavbarComponent implements OnInit {
   }
 
   navigateToDestination(destinationId: string, eventType: string) {
-    this.eventMessagesService.markAsEventsRead(destinationId, eventType).subscribe((data) => {
-      this.allEventsCount -= this.events.get(this.getKeyFromDestinationAndEventType(destinationId, eventType))!.length;
-      this.events.delete(this.getKeyFromDestinationAndEventType(destinationId, eventType))
+    this.eventMessagesService.markAsEventsRead(destinationId, eventType).subscribe(() => {
+      this.removeFromEventMap(destinationId, eventType);
       this.router.navigateByUrl(EventNotificationPathResolver.resolvePathByEventTypeAndDestination(eventType, destinationId));
     });
+  }
+
+  private removeFromEventMap(destinationId: string, eventType: string) {
+    this.allEventsCount -= this.events.get(this.getKeyFromDestinationAndEventType(destinationId, eventType))!.length;
+    this.events.delete(this.getKeyFromDestinationAndEventType(destinationId, eventType))
   }
 
   isUserAuthenticated(): boolean {

@@ -1,4 +1,4 @@
-import {Component, ComponentRef, OnInit, ViewChild, ViewChildren, ViewContainerRef} from '@angular/core';
+import {Component, ComponentRef, OnInit, ViewChildren, ViewContainerRef} from '@angular/core';
 import {Issue, IssueStatusChange} from "../domain/Issue";
 import {IssueService} from "../services/issue.service";
 import {ActivatedRoute, Router} from "@angular/router";
@@ -11,6 +11,8 @@ import {CommentDialogComponent} from "../dialogs/comment-dialog/comment-dialog.c
 import {ChatDialogComponent} from "../dialogs/chat-dialog/chat-dialog.component";
 import {AddUserIssueDialogComponent} from "../dialogs/add-user-issue-dialog/add-user-issue-dialog.component";
 import {ShowParticipantsDialogComponent} from "../dialogs/show-participants-dialog/show-participants-dialog.component";
+import {NavbarListenerService} from "../services/listeners/navbar-listener.service";
+import {EventType} from "../domain/EventType";
 
 @Component({
   selector: 'app-single-issue',
@@ -30,6 +32,7 @@ export class SingleIssueComponent implements OnInit {
   private componentRef!: ComponentRef<any>;
 
   constructor(private issueService: IssueService, private chatService: ChatService, private commentService: CommentService,
+              private navbarListenerService: NavbarListenerService,
               private activeRoute: ActivatedRoute, private router: Router, private dialog: MatDialog) {
   }
 
@@ -41,7 +44,9 @@ export class SingleIssueComponent implements OnInit {
         if (this.issue.channelId) {
           this.getChatLogs();
         }
-        this.getIssueStatusType()
+        this.getIssueStatusType();
+        this.navbarListenerService.setNavbarRemoveNotifications(this.issueId.toString(), EventType.NEW_ISSUE_COMMENT);
+        this.navbarListenerService.setNavbarRemoveNotifications(this.issueId.toString(), EventType.ASSIGNED_TO_ISSUE);
       });
     });
   }

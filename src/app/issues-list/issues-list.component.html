@@ -1,46 +1,54 @@
 <mat-selection-list [multiple]="false">
-    <div mat-subheader>Pending issues</div>
-    <div *ngIf="issueGroup.pendingIssues">
-      <mat-list-option *ngFor="let issue of issueGroup.pendingIssues" [routerLink]="['/issues', issue.id]">
-        <mat-icon mat-list-icon>comment</mat-icon>
-        <div mat-line><strong>{{issue.title}}</strong></div>
-        <div mat-line> last update: {{issue.updatedAt}} </div>
-        <div mat-line><br/></div>
-        <div mat-line align="start">{{issue.issueStatus}}</div>
-      </mat-list-option>
-    </div>
+  <div mat-subheader>Pending issues</div>
+  <div *ngIf="issueGroup.pendingIssues">
+    <mat-list-option *ngFor="let issue of issueGroup.pendingIssues" [routerLink]="['/issues', issue.id]">
+      <mat-icon mat-list-icon>comment</mat-icon>
+      <div mat-line><strong>{{issue.title}}</strong></div>
+      <div mat-line> last update: {{issue.updatedAt}} </div>
+      <div mat-line> created by: {{issue.firstName + ' ' + issue?.lastName}} </div>
+      <p
+        align="end">{{issue?.eventNotificationCount == 0 ? '&nbsp;' : 'New messages:' + issue.eventNotificationCount}}</p>
+      <div mat-line align="start">{{issue.issueStatus}}</div>
+    </mat-list-option>
+  </div>
   <mat-divider></mat-divider>
   <div mat-subheader>Escalating issues</div>
-    <div *ngIf="issueGroup.escalatingIssues">
-      <mat-list-option *ngFor="let issue of issueGroup.escalatingIssues" [routerLink]="['/issues', issue.id]">
-        <mat-icon mat-list-icon>comment</mat-icon>
-        <div mat-line><strong>{{issue.title}}</strong></div>
-        <div mat-line> last update: {{issue.updatedAt}} </div>
-        <div mat-line><br/></div>
-        <div mat-line align="start">{{issue.issueStatus}}</div>
-      </mat-list-option>
-    </div>
+  <div *ngIf="issueGroup.escalatingIssues">
+    <mat-list-option *ngFor="let issue of issueGroup.escalatingIssues" [routerLink]="['/issues', issue.id]">
+      <mat-icon mat-list-icon>comment</mat-icon>
+      <div mat-line><strong>{{issue.title}}</strong></div>
+      <div mat-line> last update: {{issue.updatedAt}} </div>
+      <div mat-line> created by: {{issue.firstName + ' ' + issue?.lastName}} </div>
+      <p
+        align="end">{{issue?.eventNotificationCount == 0 ? '&nbsp;' : 'New messages:' + issue.eventNotificationCount}}</p>
+      <div mat-line align="start">{{issue.issueStatus}}</div>
+    </mat-list-option>
+  </div>
   <mat-divider></mat-divider>
   <div mat-subheader>Info required issues</div>
-    <div *ngIf="issueGroup.infoRequiredIssues">
-      <mat-list-option *ngFor="let issue of issueGroup.infoRequiredIssues" [routerLink]="['/issues', issue.id]">
-        <mat-icon mat-list-icon>comment</mat-icon>
-        <div mat-line><strong>{{issue.title}}</strong></div>
-        <div mat-line> last update: {{issue.updatedAt}} </div>
-        <div mat-line><br/></div>
-        <div mat-line align="start">{{issue.issueStatus}}</div>
-      </mat-list-option>
-    </div>
+  <div *ngIf="issueGroup.infoRequiredIssues">
+    <mat-list-option *ngFor="let issue of issueGroup.infoRequiredIssues" [routerLink]="['/issues', issue.id]">
+      <mat-icon mat-list-icon>comment</mat-icon>
+      <div mat-line><strong>{{issue.title}}</strong></div>
+      <div mat-line> last update: {{issue.updatedAt}} </div>
+      <div mat-line> created by: {{issue.firstName + ' ' + issue?.lastName}} </div>
+      <p
+        align="end">{{issue?.eventNotificationCount == 0 ? '&nbsp;' : 'New messages:' + issue.eventNotificationCount}}</p>
+      <div mat-line align="start">{{issue.issueStatus}}</div>
+    </mat-list-option>
+  </div>
   <mat-divider></mat-divider>
   <div mat-subheader>Closed issues</div>
-    <div *ngIf="issueGroup.closedIssues">
-      <mat-list-option *ngFor="let issue of issueGroup.closedIssues" [routerLink]="['/issues', issue.id]">
-        <mat-icon mat-list-icon>comment</mat-icon>
-        <div mat-line><strong>{{issue.title}}</strong></div>
-        <div mat-line> last update: {{issue.updatedAt}} </div>
-        <div mat-line><br/></div>
-        <div mat-line align="start">{{issue.issueStatus}}</div>
-      </mat-list-option>
-    </div>
+  <div *ngIf="issueGroup.closedIssues">
+    <mat-list-option *ngFor="let issue of issueGroup.closedIssues" [routerLink]="['/issues', issue.id]">
+      <mat-icon mat-list-icon>comment</mat-icon>
+      <div mat-line><strong>{{issue.title}}</strong></div>
+      <div mat-line> last update: {{issue.updatedAt}} </div>
+      <div mat-line> created by: {{issue.firstName + ' ' + issue?.lastName}} </div>
+      <p
+        align="end">{{issue?.eventNotificationCount == 0 ? '&nbsp;' : 'New messages:' + issue.eventNotificationCount}}</p>
+      <div mat-line align="start">{{issue.issueStatus}}</div>
+    </mat-list-option>
+  </div>
   <mat-divider></mat-divider>
 </mat-selection-list>

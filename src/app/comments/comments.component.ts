@@ -5,7 +5,7 @@ import {Comment, CommentCreate} from "../domain/Comment";
 import {CommentDialogComponent} from "../dialogs/comment-dialog/comment-dialog.component";
 import {MatDialog} from "@angular/material/dialog";
 import {EventType} from "../domain/EventType";
-import {EventNotificationService} from "../services/event-notification.service";
+import {EventNotificationListenerService} from "../services/listeners/event-notification-listener.service";
 
 @Component({
   selector: 'app-comments',
@@ -17,7 +17,7 @@ export class CommentsComponent implements OnInit {
   issueId: number = -1;
   comments: Comment[] = [];
 
-  constructor(private commentService: CommentService, private eventNotificationService: EventNotificationService,
+  constructor(private commentService: CommentService, private eventNotificationService: EventNotificationListenerService,
               private activeRoute: ActivatedRoute, private dialog: MatDialog) {
   }
 
