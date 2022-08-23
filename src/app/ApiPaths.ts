@@ -5,7 +5,7 @@ export enum ApiPaths {
   Comments = '/api/v1/comments',
   Users = '/api/v1/users',
   SSE = '/api/v1/sse/events',
-  EventMessages = '/api/v1/event-notification',
+  EventMessages = '/api/v1/event-notifications',
   WebSocket = '/websocket',
   WebSocketSubscribe = '/topic/private.',
   WebSocketSend = '/app/private-chat-room.',

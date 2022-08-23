@@ -17,10 +17,10 @@ export class EventNotificationService {
   constructor(private authService: AuthService,
               private httpClient: HttpClient) { }
 
-  markAsEventsRead(channelId: string, eventType: string): Observable<any> {
+  markEventNotificationAsRead(destinationId: string, eventType: string): Observable<any> {
   let params = new HttpParams().set('eventType', eventType);
 
-  return this.httpClient.patch(this.EVENT_MESSAGE_URL + '/' + channelId, JSON.stringify({}), {params: params});
+  return this.httpClient.patch(this.EVENT_MESSAGE_URL + '/' + destinationId, JSON.stringify({}), {params: params});
   }
 
   getAllUnreadEventNotifications(): Observable<EventNotification[]>  {

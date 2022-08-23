@@ -13,6 +13,7 @@ import {AddUserIssueDialogComponent} from "../dialogs/add-user-issue-dialog/add-
 import {ShowParticipantsDialogComponent} from "../dialogs/show-participants-dialog/show-participants-dialog.component";
 import {NavbarListenerService} from "../services/listeners/navbar-listener.service";
 import {EventType} from "../domain/EventType";
+import {EventNotificationService} from "../services/event-notification.service";
 
 @Component({
   selector: 'app-single-issue',
@@ -32,7 +33,7 @@ export class SingleIssueComponent implements OnInit {
   private componentRef!: ComponentRef<any>;
 
   constructor(private issueService: IssueService, private chatService: ChatService, private commentService: CommentService,
-              private navbarListenerService: NavbarListenerService,
+              private navbarListenerService: NavbarListenerService, private notificationService: EventNotificationService,
               private activeRoute: ActivatedRoute, private router: Router, private dialog: MatDialog) {
   }
 
@@ -41,6 +42,7 @@ export class SingleIssueComponent implements OnInit {
       this.issueId = Number(params.get('issueId'));
       this.issueService.getSingleIssue(this.issueId).subscribe((data) => {
         this.issue = data;
+        this.notificationService.markEventNotificationAsRead(String(this.issue.id), EventType.ISSUE_ALL).subscribe();
         if (this.issue.channelId) {
           this.getChatLogs();
         }

@@ -50,10 +50,9 @@ export class NavbarComponent implements OnInit {
 
   connect(): void {
     this.source = new EventSource(this.serverUrl + "?token=Bearer " + this.authService.getToken());
-    console.log('Connecting to eventSource');
+    console.log('Connecting to event source');
     this.source.addEventListener('message', message => {
       let eventNotification = this.parseEventJson(message);
-      console.log(eventNotification);
       this.updateEventMap(eventNotification);
       this.eventNotificationService.setEventNotification(EnumParser.getEnumFromString(EventType, eventNotification.eventType));
     });
@@ -86,7 +85,7 @@ export class NavbarComponent implements OnInit {
   }
 
   navigateToDestination(destinationId: string, eventType: string) {
-    this.eventMessagesService.markAsEventsRead(destinationId, eventType).subscribe(() => {
+    this.eventMessagesService.markEventNotificationAsRead(destinationId, eventType).subscribe(() => {
       this.removeFromEventMap(destinationId, eventType);
       this.router.navigateByUrl(EventNotificationPathResolver.resolvePathByEventTypeAndDestination(eventType, destinationId));
     });
