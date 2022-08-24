@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, ComponentRef, Input, OnInit, ViewChildren, ViewContainerRef} from '@angular/core';
 import {ChatService} from "../services/chat.service";
 import {Router} from "@angular/router";
 import {ChatInfo} from "../domain/ChatInfo";
@@ -13,9 +13,17 @@ import {snackBarDuration} from "../constants/Properties";
 export class ChatListComponent implements OnInit {
 
   chatList: ChatInfo[] = [];
+  public channelId: string = '';
+  public issueId: number = -1;
+  public showChat: boolean = false;
+  public selectedChannelId: string = '';
+
+  @ViewChildren('chat', {read: ViewContainerRef}) ref!: ViewContainerRef;
+  private componentRef!: ComponentRef<any>;
 
   constructor(private chatService: ChatService, private snackBar: MatSnackBar,
-              private router: Router) { }
+              private router: Router) {
+  }
 
   ngOnInit(): void {
     this.chatService.getChatList().subscribe(data => this.chatList = data);
@@ -23,8 +31,8 @@ export class ChatListComponent implements OnInit {
 
   createNewChat() {
     this.chatService.createNewChat().subscribe(data => {
-      this.chatList.push(data);
-    }, error => {
+        this.chatList.push(data);
+      }, error => {
         this.snackBar.open('Couldn\'t load issues, try again later.', 'Ok', {
           duration: snackBarDuration
         });
@@ -36,5 +44,19 @@ export class ChatListComponent implements OnInit {
     this.chatService.joinChat(channelId).subscribe(data => {
       this.router.navigateByUrl('/chat/' + channelId);
     });
+  }
+
+  setChannelAndIssueId(channelId: string, issueId: number) {
+    this.channelId = channelId;
+    this.issueId = issueId;
+    this.showChat = false;
+    this.selectedChannelId = channelId;
+    setTimeout(() => {
+      this.showChat = true
+    }, 100);
+  }
+
+  destroyStickyChat() {
+    this.showChat = false;
   }
 }

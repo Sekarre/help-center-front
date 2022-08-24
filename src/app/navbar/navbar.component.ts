@@ -121,4 +121,9 @@ export class NavbarComponent implements OnInit {
   getNotificationMessage(destinationId: string, eventType: string) {
     return EventNotificationMessageFactory.getEventNotificationMessage(destinationId, eventType);
   }
+
+  logout() {
+    this.authService.logout();
+    this.router.navigate(['/login']);
+  }
 }

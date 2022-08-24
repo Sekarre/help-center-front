@@ -1,20 +1,37 @@
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/>
+
 <div class="container">
-  <div class="row">
-    <div class="col-sm-4">
-      <div class="single category">
-        <h3 class="side-title">Chats</h3>
-        <ul class="list-unstyled">
-          <li *ngFor="let chat of chatList">
-            <a [routerLink]="['/chat', chat.channelId]" title="{{chat.channelName}}">{{chat.channelName}}
-              <span class="pull-right">
-                <button class="btn btn-danger" (click)="joinChat(chat.channelId)">Join</button>
-              </span>
+  <div class="row clearfix">
+    <div class="col-lg-12">
+      <div class="card chat-app">
+        <div id="plist" class="people-list">
+          <div class="input-group sticky">
+            <div class="input-group-prepend">
+              <span class="input-group-text "><mat-icon>search</mat-icon></span>
+            </div>
+            <input type="text" class="form-control" placeholder="Search...">
+          </div>
+          <ul class="list-unstyled chat-list mt-2 mb-0" *ngFor="let chat of chatList">
+            <li [ngClass]="selectedChannelId == chat.channelId ? 'selected clearfix' : 'clearfix'" (click)="setChannelAndIssueId(chat.channelId, chat.issueId)">
+              <div class="about" title="{{chat.channelName}}">
+                <div class="name">{{chat.channelName}}</div>
+                <div class="status"><i class="fa fa-circle online"></i></div>
+              </div>
+            </li>
+          </ul>
+        </div>
+        <div class="chat">
+          <div class="chat-header clearfix">
+            <a class="row" mat-button *ngIf="issueId != -1" [routerLink]="['/issues', issueId]" target="_blank" >
+              Go to issue
+              <mat-icon>launch</mat-icon>
             </a>
-          </li>
-        </ul>
+          </div>
+          <div class="chat-history">
+            <app-chat #chat *ngIf="showChat" [channelId]="channelId" (toDestroyEvent)="destroyStickyChat()"></app-chat>
+          </div>
+        </div>
       </div>
-      <button class="btn btn-info" (click)="createNewChat()">Create new chat</button>
     </div>
   </div>
 </div>
-

@@ -38,6 +38,7 @@ import {MatTableModule} from "@angular/material/table";
 import {AddUserIssueDialogComponent} from './dialogs/add-user-issue-dialog/add-user-issue-dialog.component';
 import {ShowParticipantsDialogComponent} from './dialogs/show-participants-dialog/show-participants-dialog.component';
 import {MatSnackBar, MatSnackBarModule} from "@angular/material/snack-bar";
+import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 
 @NgModule({
   declarations: [
@@ -80,7 +81,8 @@ import {MatSnackBar, MatSnackBarModule} from "@angular/material/snack-bar";
     MatGridListModule,
     MatButtonToggleModule,
     MatTableModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatProgressSpinnerModule
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,

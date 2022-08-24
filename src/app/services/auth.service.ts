@@ -24,19 +24,19 @@ export class AuthService {
   }
 
   logout() {
-    sessionStorage.removeItem('token');
+    localStorage.removeItem('token');
   }
 
   isUserAuthenticated(): boolean {
-    return !!this.getToken();
+    return !!(this.getToken() && !this.isTokenExpired());
   }
 
   getToken(): string {
-    return sessionStorage.getItem('token')!;
+    return localStorage.getItem('token')!;
   }
 
   setToken(token: string) {
-    sessionStorage.setItem('token', token);
+    localStorage.setItem('token', token);
   }
 
   getRoles(): string[] {
@@ -49,6 +49,12 @@ export class AuthService {
     const jwtDecode: any = jwt_decode(this.getToken());
     console.log(jwtDecode.userFullName);
     return jwtDecode.userFullName;
+  }
+
+  isTokenExpired(): boolean {
+    const jwtDecode: any = jwt_decode(this.getToken());
+    let expiredDate = jwtDecode.exp;
+    return (Math.floor((new Date).getTime() / 1000)) >= expiredDate;
   }
 
   getAuthHeaders(): any {

@@ -1,4 +1,5 @@
 export interface ChatInfo {
   channelName: string,
-  channelId: string
+  channelId: string,
+  issueId: number
 }

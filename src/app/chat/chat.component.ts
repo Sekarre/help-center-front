@@ -1,4 +1,15 @@
-import {Component, ElementRef, OnInit, QueryList, ViewChild, ViewChildren} from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  QueryList,
+  ViewChild,
+  ViewChildren
+} from '@angular/core';
 import {ChatService} from "../services/chat.service";
 import {ActivatedRoute, NavigationStart, Router} from "@angular/router";
 import {ChatMessage} from "../domain/ChatMessage";
@@ -17,14 +28,18 @@ import {ApiPaths} from "../ApiPaths";
 export class ChatComponent implements OnInit {
 
   public input: any;
+  @Input() channelId: string = '';
+  @Output() toDestroyEvent: EventEmitter<any> = new EventEmitter<any>();
   @ViewChild('content') content!: ElementRef;
   @ViewChildren('messagesTracker') messagesTracker!: QueryList<any>;
   private isConnected: boolean = false;
   public messages: ChatMessage[] = [];
   private stompClient: any;
-  private channelId: string = "";
   private serverUrl: string = environment.baseUrl + ApiPaths.WebSocket;
-  private fileBase64!: string | ArrayBuffer | null;
+  public fileBase64!: string | ArrayBuffer | null;
+  public showPreviewImageDeleteButton: boolean = false;
+  public showSpinner: boolean = true;
+  public inputImage: any;
 
   constructor(public chatService: ChatService,
               private activatedRoute: ActivatedRoute,
@@ -32,15 +47,12 @@ export class ChatComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.activatedRoute.paramMap.subscribe(params => {
-      this.channelId = String(params.get('channelId'));
-      this.subscribeToRouterEvents();
-      this.initializeWebSocketConnection();
-      this.loadAllMessages();
-    });
   }
 
   ngAfterViewInit() {
+    this.subscribeToRouterEvents();
+    this.initializeWebSocketConnection();
+    this.loadAllMessages();
     this.scrollToBottom();
     this.messagesTracker.changes.subscribe(this.scrollToBottom);
   }
@@ -54,7 +66,8 @@ export class ChatComponent implements OnInit {
     this.stompClient = Stomp.over(() => {
       return new SockJS(this.serverUrl, this.chatService.getAuthHeader());
     });
-    this.stompClient.debug = () => {};
+    this.stompClient.debug = () => {
+    };
     this.stompClient.reconnect_delay = 5000;
     this.stompClient.connect(this.chatService.getAuthHeader(), (frame: any) => {
       this.isConnected = true;
@@ -70,6 +83,7 @@ export class ChatComponent implements OnInit {
   loadAllMessages() {
     this.chatService.getChatMessages(this.channelId).subscribe(data => {
       this.messages = data;
+      this.showSpinner = false;
     });
   }
 
@@ -84,6 +98,7 @@ export class ChatComponent implements OnInit {
     let content = JSON.stringify({'message': message, 'file': this.fileBase64});
     this.stompClient.send(ApiPaths.WebSocketSend + this.channelId, {}, content);
     this.fileBase64 = null;
+    this.inputImage = '';
   }
 
   scrollToBottom = () => {
@@ -97,6 +112,10 @@ export class ChatComponent implements OnInit {
     return senderId == botId;
   }
 
+  removeFile() {
+    this.fileBase64 = null;
+    this.inputImage = '';
+  }
 
   onChange(event: any) {
     let file = event.target.files[0];
