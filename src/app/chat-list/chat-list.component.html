@@ -9,9 +9,9 @@
             <div class="input-group-prepend">
               <span class="input-group-text "><mat-icon>search</mat-icon></span>
             </div>
-            <input type="text" class="form-control" placeholder="Search...">
+            <input [(ngModel)]="searchText" type="text" class="form-control" placeholder="Search..." (keyup)="filterChats($event)">
           </div>
-          <ul class="list-unstyled chat-list mt-2 mb-0" *ngFor="let chat of chatList">
+          <ul class="list-unstyled chat-list mt-2 mb-0" *ngFor="let chat of filteredChatList">
             <li [ngClass]="selectedChannelId == chat.channelId ? 'selected clearfix' : 'clearfix'" (click)="setChannelAndIssueId(chat.channelId, chat.issueId)">
               <div class="about" title="{{chat.channelName}}">
                 <div class="name">{{chat.channelName}}</div>

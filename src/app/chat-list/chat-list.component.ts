@@ -13,10 +13,12 @@ import {snackBarDuration} from "../constants/Properties";
 export class ChatListComponent implements OnInit {
 
   chatList: ChatInfo[] = [];
+  filteredChatList: ChatInfo[] = [];
   public channelId: string = '';
   public issueId: number = -1;
   public showChat: boolean = false;
   public selectedChannelId: string = '';
+  public searchText: string = '';
 
   @ViewChildren('chat', {read: ViewContainerRef}) ref!: ViewContainerRef;
   private componentRef!: ComponentRef<any>;
@@ -26,7 +28,10 @@ export class ChatListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.chatService.getChatList().subscribe(data => this.chatList = data);
+    this.chatService.getChatList().subscribe(data => {
+      this.chatList = data;
+      this.filteredChatList = this.chatList;
+    });
   }
 
   createNewChat() {
@@ -58,5 +63,13 @@ export class ChatListComponent implements OnInit {
 
   destroyStickyChat() {
     this.showChat = false;
+  }
+
+  filterChats(event: KeyboardEvent) {
+    if (this.chatList && this.searchText != '') {
+      this.filteredChatList = this.chatList.filter(x => x.channelName.toLowerCase().includes(this.searchText.toLowerCase().toLowerCase()));
+    } else if (this.searchText == '') {
+      this.filteredChatList = this.chatList;
+    }
   }
 }
