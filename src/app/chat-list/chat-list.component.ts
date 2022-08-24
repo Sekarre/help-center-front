@@ -2,6 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {ChatService} from "../services/chat.service";
 import {Router} from "@angular/router";
 import {ChatInfo} from "../domain/ChatInfo";
+import {MatSnackBar} from "@angular/material/snack-bar";
+import {snackBarDuration} from "../constants/Properties";
 
 @Component({
   selector: 'app-chat-list',
@@ -12,7 +14,7 @@ export class ChatListComponent implements OnInit {
 
   chatList: ChatInfo[] = [];
 
-  constructor(private chatService: ChatService,
+  constructor(private chatService: ChatService, private snackBar: MatSnackBar,
               private router: Router) { }
 
   ngOnInit(): void {
@@ -22,7 +24,12 @@ export class ChatListComponent implements OnInit {
   createNewChat() {
     this.chatService.createNewChat().subscribe(data => {
       this.chatList.push(data);
-    } )
+    }, error => {
+        this.snackBar.open('Couldn\'t load issues, try again later.', 'Ok', {
+          duration: snackBarDuration
+        });
+      }
+    )
   }
 
   joinChat(channelId: string) {

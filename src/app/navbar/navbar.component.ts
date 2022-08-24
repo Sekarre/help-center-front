@@ -24,6 +24,7 @@ export class NavbarComponent implements OnInit {
   public events: Map<string, EventNotification[]> = new Map<string, EventNotification[]>();
   public allEventsCount: number = 0;
   public roles: string[] = []
+  public username: string = ""
 
   constructor(private authService: AuthService, private eventNotificationService: EventNotificationListenerService,
               private eventMessagesService: EventNotificationService, private navbarListenerService: NavbarListenerService,
@@ -33,6 +34,7 @@ export class NavbarComponent implements OnInit {
     this.connect();
     this.getAllUnreadEventNotifications();
     this.roles = this.authService.getRoles();
+    this.username = this.authService.getUsername();
     this.listenToNavbarReloadCalls();
   }
 

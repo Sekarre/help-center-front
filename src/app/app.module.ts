@@ -22,21 +22,22 @@ import {NewIssueComponent} from './new-issue/new-issue.component';
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
 import {MatSelectModule} from "@angular/material/select";
-import { IssuesListComponent } from './issues-list/issues-list.component';
+import {IssuesListComponent} from './issues-list/issues-list.component';
 import {MatListModule} from "@angular/material/list";
 import {MatCardModule} from "@angular/material/card";
-import { SingleIssueComponent } from './single-issue/single-issue.component';
+import {SingleIssueComponent} from './single-issue/single-issue.component';
 import {MatExpansionModule} from "@angular/material/expansion";
-import { CommentDialogComponent } from './dialogs/comment-dialog/comment-dialog.component';
+import {CommentDialogComponent} from './dialogs/comment-dialog/comment-dialog.component';
 import {MatDialog, MatDialogModule} from "@angular/material/dialog";
 import {MatGridListModule} from "@angular/material/grid-list";
-import { CommentsComponent } from './comments/comments.component';
-import { ChatDialogComponent } from './dialogs/chat-dialog/chat-dialog.component';
-import { StickyChatComponent } from './sticky-chat/sticky-chat.component';
+import {CommentsComponent} from './comments/comments.component';
+import {ChatDialogComponent} from './dialogs/chat-dialog/chat-dialog.component';
+import {StickyChatComponent} from './sticky-chat/sticky-chat.component';
 import {MatButtonToggleModule} from "@angular/material/button-toggle";
 import {MatTableModule} from "@angular/material/table";
-import { AddUserIssueDialogComponent } from './dialogs/add-user-issue-dialog/add-user-issue-dialog.component';
-import { ShowParticipantsDialogComponent } from './dialogs/show-participants-dialog/show-participants-dialog.component';
+import {AddUserIssueDialogComponent} from './dialogs/add-user-issue-dialog/add-user-issue-dialog.component';
+import {ShowParticipantsDialogComponent} from './dialogs/show-participants-dialog/show-participants-dialog.component';
+import {MatSnackBar, MatSnackBarModule} from "@angular/material/snack-bar";
 
 @NgModule({
   declarations: [
@@ -56,30 +57,31 @@ import { ShowParticipantsDialogComponent } from './dialogs/show-participants-dia
     AddUserIssueDialogComponent,
     ShowParticipantsDialogComponent
   ],
-    imports: [
-        BrowserModule,
-        RouterModule,
-        HttpClientModule,
-        FormsModule,
-        ReactiveFormsModule,
-        AppRoutingModule,
-        BrowserAnimationsModule,
-        MatToolbarModule,
-        MatIconModule,
-        MatButtonModule,
-        MatMenuModule,
-        MatBadgeModule,
-        MatFormFieldModule,
-        MatInputModule,
-        MatSelectModule,
-        MatListModule,
-        MatCardModule,
-        MatExpansionModule,
-        MatDialogModule,
-        MatGridListModule,
-        MatButtonToggleModule,
-        MatTableModule
-    ],
+  imports: [
+    BrowserModule,
+    RouterModule,
+    HttpClientModule,
+    FormsModule,
+    ReactiveFormsModule,
+    AppRoutingModule,
+    BrowserAnimationsModule,
+    MatToolbarModule,
+    MatIconModule,
+    MatButtonModule,
+    MatMenuModule,
+    MatBadgeModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule,
+    MatListModule,
+    MatCardModule,
+    MatExpansionModule,
+    MatDialogModule,
+    MatGridListModule,
+    MatButtonToggleModule,
+    MatTableModule,
+    MatSnackBarModule
+  ],
   providers: [{
     provide: HTTP_INTERCEPTORS,
     useClass: TokenInterceptorService,

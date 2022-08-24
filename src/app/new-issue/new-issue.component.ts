@@ -1,9 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {IssueType} from "../domain/IssueType";
 import {IssueService} from "../services/issue.service";
 import {Issue} from "../domain/Issue";
 import {Router} from "@angular/router";
+import {MatSnackBar} from "@angular/material/snack-bar";
+import {snackBarDuration} from "../constants/Properties";
 
 @Component({
   selector: 'app-new-issue',
@@ -16,7 +18,7 @@ export class NewIssueComponent implements OnInit {
 
   public newIssueFormGroup: FormGroup;
 
-  constructor(private router: Router, private issueService: IssueService, private formBuilder: FormBuilder) {
+  constructor(private router: Router, private issueService: IssueService, private snackBar: MatSnackBar, private formBuilder: FormBuilder) {
     this.newIssueFormGroup = this.formBuilder.group({
       title: new FormControl('', [Validators.required]),
       issueType: new FormControl('', [Validators.required]),
@@ -36,9 +38,16 @@ export class NewIssueComponent implements OnInit {
 
   createNewIssue() {
     if (this.newIssueFormGroup.valid) {
-      this.issueService.createNewIssue(this.createNewIssueFromForm()).subscribe(() => {
-        this.router.navigateByUrl('/issues');
-      });
+      this.issueService.createNewIssue(this.createNewIssueFromForm()).subscribe(
+        data => {
+          this.router.navigateByUrl('/issues');
+        },
+        error => {
+          this.snackBar.open('Couldn\'t create new issue, try again later.', 'Ok', {
+            duration: snackBarDuration
+          });
+        }
+      );
     }
   }
 

@@ -14,6 +14,8 @@ import {ShowParticipantsDialogComponent} from "../dialogs/show-participants-dial
 import {NavbarListenerService} from "../services/listeners/navbar-listener.service";
 import {EventType} from "../domain/EventType";
 import {EventNotificationService} from "../services/event-notification.service";
+import {MatSnackBar} from "@angular/material/snack-bar";
+import {snackBarDuration} from "../constants/Properties";
 
 @Component({
   selector: 'app-single-issue',
@@ -34,22 +36,28 @@ export class SingleIssueComponent implements OnInit {
 
   constructor(private issueService: IssueService, private chatService: ChatService, private commentService: CommentService,
               private navbarListenerService: NavbarListenerService, private notificationService: EventNotificationService,
-              private activeRoute: ActivatedRoute, private router: Router, private dialog: MatDialog) {
+              private activeRoute: ActivatedRoute, private router: Router, private dialog: MatDialog, private snackBar: MatSnackBar) {
   }
 
   ngOnInit(): void {
     this.activeRoute.paramMap.subscribe(params => {
       this.issueId = Number(params.get('issueId'));
-      this.issueService.getSingleIssue(this.issueId).subscribe((data) => {
-        this.issue = data;
-        this.notificationService.markEventNotificationAsRead(String(this.issue.id), EventType.ISSUE_ALL).subscribe();
-        if (this.issue.channelId) {
-          this.getChatLogs();
+      this.issueService.getSingleIssue(this.issueId).subscribe(
+        (data) => {
+          this.issue = data;
+          this.notificationService.markEventNotificationAsRead(String(this.issue.id), EventType.ISSUE_ALL).subscribe();
+          if (this.issue.channelId) {
+            this.getChatLogs();
+          }
+          this.getIssueStatusType();
+          this.navbarListenerService.setNavbarRemoveNotifications(this.issueId.toString(), EventType.NEW_ISSUE_COMMENT);
+          this.navbarListenerService.setNavbarRemoveNotifications(this.issueId.toString(), EventType.ASSIGNED_TO_ISSUE);
+        }, error => {
+          this.snackBar.open('Couldn\'t load issue, try again later.', 'Ok', {
+            duration: snackBarDuration
+          });
         }
-        this.getIssueStatusType();
-        this.navbarListenerService.setNavbarRemoveNotifications(this.issueId.toString(), EventType.NEW_ISSUE_COMMENT);
-        this.navbarListenerService.setNavbarRemoveNotifications(this.issueId.toString(), EventType.ASSIGNED_TO_ISSUE);
-      });
+      );
     });
   }
 

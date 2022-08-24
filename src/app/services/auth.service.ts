@@ -45,6 +45,12 @@ export class AuthService {
     return jwtDecode.roles;
   }
 
+  getUsername(): string {
+    const jwtDecode: any = jwt_decode(this.getToken());
+    console.log(jwtDecode.userFullName);
+    return jwtDecode.userFullName;
+  }
+
   getAuthHeaders(): any {
     return {
       'Authorization' : 'Bearer ' + this.getToken()
