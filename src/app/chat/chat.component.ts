@@ -16,9 +16,10 @@ import {ChatMessage} from "../domain/ChatMessage";
 // @ts-ignore
 import SockJS from "sockjs-client";
 import {Stomp} from "@stomp/stompjs";
-import {botId} from "../constants/Properties";
+import {botId, snackBarDuration} from "../constants/Properties";
 import {environment} from "../../environments/environment";
 import {ApiPaths} from "../ApiPaths";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-chat',
@@ -41,8 +42,7 @@ export class ChatComponent implements OnInit {
   public showSpinner: boolean = true;
   public inputImage: any;
 
-  constructor(public chatService: ChatService,
-              private activatedRoute: ActivatedRoute,
+  constructor(public chatService: ChatService, private snackBar: MatSnackBar, private activatedRoute: ActivatedRoute,
               private router: Router) {
   }
 
@@ -82,9 +82,14 @@ export class ChatComponent implements OnInit {
 
   loadAllMessages() {
     this.chatService.getChatMessages(this.channelId).subscribe(data => {
-      this.messages = data;
-      this.showSpinner = false;
-    });
+        this.messages = data;
+        this.showSpinner = false;
+      }, error => {
+        this.snackBar.open('Selected chat couldn\'t be loaded, try again later.', 'Ok', {
+          duration: snackBarDuration
+        });
+      }
+    );
   }
 
   getAndSendMessage() {
