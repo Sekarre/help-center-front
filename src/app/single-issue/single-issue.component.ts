@@ -16,6 +16,7 @@ import {EventType} from "../domain/EventType";
 import {EventNotificationService} from "../services/event-notification.service";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {snackBarDuration} from "../constants/Properties";
+import {AuthService} from "../services/auth.service";
 
 @Component({
   selector: 'app-single-issue',
@@ -35,6 +36,7 @@ export class SingleIssueComponent implements OnInit {
   private componentRef!: ComponentRef<any>;
 
   constructor(private issueService: IssueService, private chatService: ChatService, private commentService: CommentService,
+              private authService: AuthService,
               private navbarListenerService: NavbarListenerService, private notificationService: EventNotificationService,
               private activeRoute: ActivatedRoute, private router: Router, private dialog: MatDialog, private snackBar: MatSnackBar) {
   }
@@ -77,6 +79,10 @@ export class SingleIssueComponent implements OnInit {
     this.showChat = false;
   }
 
+  public isAllowedToView(): boolean {
+    return this.authService.isSupportOrHigher();
+  }
+
   openDialogForStatus(): void {
     const dialogRef = this.dialog.open(CommentDialogComponent, {
       width: '700px',
@@ -117,8 +123,9 @@ export class SingleIssueComponent implements OnInit {
       if (result && result.toSend) {
         let usersId = result.usersId;
         this.issueService.addUsersToIssue(usersId, this.issueId).subscribe(() => {
-          //todo: alert info
-          console.log("users added");
+          this.snackBar.open('Users added', 'Ok', {
+            duration: snackBarDuration
+          });
         });
       }
     });

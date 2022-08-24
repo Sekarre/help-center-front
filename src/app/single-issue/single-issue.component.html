@@ -1,15 +1,15 @@
 <div class="center">
   <div class="row-cols-1">
     <mat-card >
-      <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+      <button *ngIf="isAllowedToView()" mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
         <mat-icon>more_vert</mat-icon>
       </button>
-      <mat-menu #menu="matMenu">
-        <button mat-menu-item (click)="openDialogForPersonAdd()">
+      <mat-menu #menu="matMenu" >
+        <button *ngIf="isAllowedToView()" mat-menu-item (click)="openDialogForPersonAdd()">
           <mat-icon>person_add</mat-icon>
           <span>add person</span>
         </button>
-        <button mat-menu-item (click)="openDialogForParticipants()">
+        <button *ngIf="isAllowedToView()" mat-menu-item (click)="openDialogForParticipants()">
           <mat-icon>person</mat-icon>
           <span>Show participants</span>
         </button>
@@ -29,7 +29,7 @@
       </mat-card-content>
       <mat-divider inset></mat-divider>
       <mat-divider inset></mat-divider>
-      <mat-form-field>
+      <mat-form-field *ngIf="isAllowedToView()">
         <mat-label>Status type</mat-label>
         <mat-select [(ngModel)]="status">
           <mat-option  *ngFor="let statusType of statusTypes" [value]="statusType">
@@ -37,9 +37,9 @@
           </mat-option>
         </mat-select>
       </mat-form-field>
-      <button mat-button [disabled]="!status" (click)="openDialogForStatus()">Change status</button>
+      <button *ngIf="isAllowedToView()" mat-button [disabled]="!status" (click)="openDialogForStatus()">Change status</button>
       <mat-card-actions align="end">
-        <button mat-button (click)="openDialogForChatLogs()">Show chat logs</button>
+        <button mat-button *ngIf="isAllowedToView()" (click)="openDialogForChatLogs()">Show chat logs</button>
         <button mat-button (click)="joinChat()">Join chat</button>
       </mat-card-actions>
     </mat-card>

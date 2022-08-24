@@ -5,6 +5,7 @@ import {Observable} from 'rxjs';
 import {environment} from "../../environments/environment";
 import {ApiPaths} from "../ApiPaths";
 import jwt_decode from 'jwt-decode';
+import {RoleNames} from "../domain/RoleNames";
 
 @Injectable({providedIn: 'root'})
 export class AuthService {
@@ -43,6 +44,16 @@ export class AuthService {
     const jwtDecode: any = jwt_decode(this.getToken());
     console.log(jwtDecode.roles);
     return jwtDecode.roles;
+  }
+
+  isSupportOrHigher(): boolean {
+    const jwtDecode: any = jwt_decode(this.getToken());
+    let roles: string[] = jwtDecode.roles;
+    roles = roles.filter(v => {
+      return v.includes(RoleNames.SUPPORT) || v.includes(RoleNames.ADMIN);
+    });
+
+    return !(roles.length == 0);
   }
 
   getUsername(): string {
