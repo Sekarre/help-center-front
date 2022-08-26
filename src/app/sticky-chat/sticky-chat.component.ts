@@ -16,7 +16,8 @@ import {ChatService} from "../services/chat.service";
 import {Stomp} from "@stomp/stompjs";
 // @ts-ignore
 import SockJS from "sockjs-client";
-import {botId} from "../constants/Properties";
+import {botId, snackBarDuration} from "../constants/Properties";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-sticky-chat',
@@ -37,8 +38,9 @@ export class StickyChatComponent implements OnInit {
   private serverUrl: string = environment.baseUrl + ApiPaths.WebSocket;
   public fileBase64!: string | ArrayBuffer | null;
   public showPreviewImageDeleteButton: boolean = false;
+  public showSpinner: boolean = true;
 
-  constructor(public chatService: ChatService) { }
+  constructor(public chatService: ChatService, private snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
       this.initializeWebSocketConnection();
@@ -78,9 +80,15 @@ export class StickyChatComponent implements OnInit {
   }
 
   loadAllMessages() {
-    this.chatService.getChatMessages(this.channelId).subscribe(data => {
-      this.messages = data;
-    });
+    this.chatService.getChatMessages(this.channelId).subscribe((data) => {
+        this.messages = data;
+        this.showSpinner = false;
+      }, error => {
+        this.snackBar.open('Selected chat couldn\'t be loaded, try again later.', 'Ok', {
+          duration: snackBarDuration
+        });
+      }
+    );
   }
 
   getAndSendMessage() {

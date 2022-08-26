@@ -11,7 +11,7 @@
           </div>
           <div #messagesTracker class="group-rom" *ngFor="let msg of messages">
             <div
-              [ngClass]="checkIfBotMessage(msg.senderId)  ? 'first-part bot' : 'first-part odd'">{{msg.senderName }}</div>
+              [ngClass]="checkIfBotMessage(msg.senderId)  ? 'first-part' : 'first-part odd'">{{checkIfBotMessage(msg.senderId)  ? '' : msg.senderName + ' ' + msg.senderLastname }}</div>
             <div class="second-part">{{msg.message}}
             </div>
             <div class="third-part">{{msg.createdDateTime}}</div>
@@ -35,7 +35,7 @@
         </ng-container>
         <input [(ngModel)]="inputImage" class="form-control chat-input-message-2" type="file" accept="image/*"
                (change)="onChange($event)">
-        <input type="text" class="form-control chat-input-message" [(ngModel)]="input"
+        <input type="text" maxlength="254" class="form-control chat-input-message" [(ngModel)]="input"
                (keydown.enter)="getAndSendMessage()" placeholder="Write message.."/>
         <button mat-icon-button (click)="getAndSendMessage()">
           <mat-icon>send</mat-icon>

@@ -23,7 +23,7 @@
         </div>
         <div class="chat">
           <div class="chat-header clearfix">
-            <a class="row" mat-button *ngIf="issueId != -1" [routerLink]="['/issues', issueId]" target="_blank" >
+            <a class="row" mat-button *ngIf="issueId && issueId != -1" [routerLink]="['/issues', issueId]" target="_blank" >
               Go to issue
               <mat-icon>launch</mat-icon>
             </a>
