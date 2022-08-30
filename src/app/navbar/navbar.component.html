@@ -7,9 +7,6 @@
     <a mat-button [routerLink]="['/issues/new']">New issue</a>
     <span class="spacer-large"></span>
     <a class="role">{{username}}</a>
-<!--    <button mat-icon-button class="example-icon" aria-label="Example icon-button with share icon">-->
-<!--      <mat-icon>share</mat-icon>-->
-<!--    </button>-->
     <button mat-button [matMenuTriggerFor]="menu">
       <mat-icon matBadge="{{allEventsCount}}" matBadgeColor="warn" fontIcon="notifications"></mat-icon>
     </button>

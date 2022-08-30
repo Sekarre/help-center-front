@@ -42,7 +42,6 @@ export class AuthService {
 
   getRoles(): string[] {
     const jwtDecode: any = jwt_decode(this.getToken());
-    console.log(jwtDecode.roles);
     return jwtDecode.roles;
   }
 
@@ -58,7 +57,6 @@ export class AuthService {
 
   getUsername(): string {
     const jwtDecode: any = jwt_decode(this.getToken());
-    console.log(jwtDecode.userFullName);
     return jwtDecode.userFullName;
   }
 

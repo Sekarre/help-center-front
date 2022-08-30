@@ -9,7 +9,7 @@ export class EventNotificationPathResolver {
       case EventType.CHAT_All:
         return '/chat/' + destinationId;
       case EventType.NEW_CHAT_MESSAGE:
-        return '/chat/' + destinationId;
+        return '/chat-channels?channelId=' + destinationId;
       case EventType.REMOVED_FROM_CHAT:
         return '/issues';
       case EventType.ISSUE_ALL:
