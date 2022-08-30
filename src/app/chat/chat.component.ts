@@ -77,6 +77,13 @@ export class ChatComponent implements OnInit {
           this.messages.push(parsedMessage);
         }
       });
+      this.stompClient.subscribe(ApiPaths.WebSocketErrorsSubscribe,
+        (message: any) => {
+          this.snackBar.open('Error with chat occurred.', 'Ok', {
+            duration: snackBarDuration
+          });
+        }
+      );
     });
   }
 
