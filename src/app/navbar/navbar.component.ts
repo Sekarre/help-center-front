@@ -11,6 +11,7 @@ import {EventNotificationListenerService} from "../services/listeners/event-noti
 import {EventType} from "../domain/EventType";
 import {EnumParser} from "../util/EnumParser";
 import {NavbarListenerService} from "../services/listeners/navbar-listener.service";
+import {EventService} from "../services/event.service";
 
 @Component({
   selector: 'app-navbar',
@@ -21,14 +22,13 @@ export class NavbarComponent implements OnInit {
 
   private serverUrl: string = environment.baseUrl + ApiPaths.SSE;
   private source: EventSource | undefined;
-  public events: Map<string, EventNotification[]> = new Map<string, EventNotification[]>();
   public allEventsCount: number = 0;
   public roles: string[] = []
   public username: string = ""
 
-  constructor(private authService: AuthService, private eventNotificationService: EventNotificationListenerService,
-              private eventMessagesService: EventNotificationService, private navbarListenerService: NavbarListenerService,
-              private router: Router) { }
+  constructor(private authService: AuthService, private eventNotificationListenerService: EventNotificationListenerService,
+              private eventNotificationService: EventNotificationService, private navbarListenerService: NavbarListenerService,
+              public eventService: EventService, private router: Router) { }
 
   ngOnInit(): void {
     this.connect();
@@ -56,7 +56,7 @@ export class NavbarComponent implements OnInit {
     this.source.addEventListener('message', message => {
       let eventNotification = this.parseEventJson(message);
       this.updateEventMap(eventNotification);
-      this.eventNotificationService.setEventNotification(EnumParser.getEnumFromString(EventType, eventNotification.eventType));
+      this.eventNotificationListenerService.setEventNotification(EnumParser.getEnumFromString(EventType, eventNotification.eventType));
     });
   }
 
@@ -66,7 +66,7 @@ export class NavbarComponent implements OnInit {
   }
 
   getAllUnreadEventNotifications() {
-    this.eventMessagesService.getAllUnreadEventNotifications().subscribe(data => {
+    this.eventNotificationService.getAllUnreadEventNotifications().subscribe(data => {
       data.forEach(elem => this.updateEventMap(elem));
     });
   }
@@ -77,48 +77,26 @@ export class NavbarComponent implements OnInit {
   }
 
   updateEventMap(eventMessage: EventNotification) {
-    let eventNotifications = this.events.get(this.getKeyFromEventNotification(eventMessage));
-    if (eventNotifications == undefined) {
-      eventNotifications = [];
-    }
-    eventNotifications.push(eventMessage);
-    this.allEventsCount++;
-    this.events.set(this.getKeyFromEventNotification(eventMessage), eventNotifications);
+    this.eventService.updateEventMap(eventMessage);
+    this.allEventsCount = this.eventService.getAllEventsCount();
   }
 
   navigateToDestination(destinationId: string, eventType: string) {
-    this.eventMessagesService.markEventNotificationAsRead(destinationId, eventType).subscribe(() => {
+    this.eventNotificationService.markEventNotificationAsRead(destinationId, eventType).subscribe(() => {
       this.removeFromEventMap(destinationId, eventType);
       this.router.navigateByUrl(EventNotificationPathResolver.resolvePathByEventTypeAndDestination(eventType, destinationId));
     });
   }
 
   private removeFromEventMap(destinationId: string, eventType: string) {
-    if (this.events.size != 0) {
-      this.allEventsCount -= this.events.get(this.getKeyFromDestinationAndEventType(destinationId, eventType))!.length;
-      this.events.delete(this.getKeyFromDestinationAndEventType(destinationId, eventType))
-    }
+    this.eventService.removeFromEventMap(destinationId, eventType);
+    this.allEventsCount = this.eventService.getAllEventsCount();
   }
 
   isUserAuthenticated(): boolean {
     return this.authService.isUserAuthenticated();
   }
 
-  getKeyFromEventNotification(eventNotification: EventNotification): string {
-    return eventNotification.destinationId + ";" + eventNotification.eventType;
-  }
-
-  getKeyFromDestinationAndEventType(destinationId: string, eventType: string): string {
-    return destinationId + ";" + eventType;
-  }
-
-  getDestinationIdFromMapKey(mapKey: string) {
-    return mapKey.split(";")[0];
-  }
-
-  getEventTypeIdFromMapKey(mapKey: string) {
-    return mapKey.split(";")[1];
-  }
 
   getNotificationMessage(destinationId: string, eventType: string) {
     return EventNotificationMessageFactory.getEventNotificationMessage(destinationId, eventType);

@@ -67,19 +67,19 @@ export class StickyChatComponent implements OnInit {
     this.stompClient.reconnect_delay = 5000;
     this.stompClient.connect(this.chatService.getAuthHeader(), (frame: any) => {
       this.isConnected = true;
+      this.stompClient.subscribe(ApiPaths.WebSocketErrorsSubscribe,
+        (message: any) => {
+          this.snackBar.open('Error with chat occurred.', 'Ok', {
+            duration: snackBarDuration
+          });
+        }
+      );
       this.stompClient.subscribe(ApiPaths.WebSocketSubscribe + this.channelId,
         (message: any) => {
           if (message.body) {
             let parsedMessage: ChatMessage = <ChatMessage>JSON.parse(message.body);
             this.messages.push(parsedMessage);
           }
-        }
-      );
-      this.stompClient.subscribe(ApiPaths.WebSocketErrorsSubscribe,
-        (message: any) => {
-            this.snackBar.open('Error with chat occurred.', 'Ok', {
-              duration: snackBarDuration
-            });
         }
       );
     });

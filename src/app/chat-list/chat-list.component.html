@@ -9,23 +9,29 @@
             <div class="input-group-prepend">
               <span class="input-group-text "><mat-icon>search</mat-icon></span>
             </div>
-            <input [(ngModel)]="searchText" type="text" class="form-control" placeholder="Search..." (keyup)="filterChats($event)">
+            <input [(ngModel)]="searchText" type="text" class="form-control" placeholder="Search..."
+                   (keyup)="filterChats($event)">
           </div>
           <ul class="list-unstyled chat-list mt-2 mb-0" *ngFor="let chat of filteredChatList">
-            <li [ngClass]="selectedChannelId == chat.channelId ? 'selected clearfix' : 'clearfix'" (click)="setChannelAndIssueId(chat.channelId, chat.issueId)">
+            <li [ngClass]="selectedChannelId == chat.channelId ? 'selected clearfix' : 'clearfix'"
+                (click)="setChannelAndIssueId(chat.channelId, chat.issueId)">
               <div class="about" title="{{chat.channelName}}">
                 <div class="name">{{chat.channelName}}</div>
                 <div class="status"><i class="fa fa-circle online"></i></div>
               </div>
-              <div align="end">
-                test
+              <div align="end" class="message-count">
+                        <span matBadgePosition="before" matBadgeSize="medium"
+                              matBadgeColor="warn"
+                              matBadge="{{eventService.getChatEventsCount(chat.channelId) == 0 ? '' : eventService.getChatEventsCount(chat.channelId)}}"
+                              matBadgeOverlap="false"></span>
               </div>
             </li>
           </ul>
         </div>
         <div class="chat">
           <div class="chat-header clearfix">
-            <a class="row" mat-button *ngIf="issueId && issueId != -1" [routerLink]="['/issues', issueId]" target="_blank" >
+            <a class="row" mat-button *ngIf="issueId && issueId != -1" [routerLink]="['/issues', issueId]"
+               target="_blank">
               Go to issue
               <mat-icon>launch</mat-icon>
             </a>

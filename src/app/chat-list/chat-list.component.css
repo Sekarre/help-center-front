@@ -222,4 +222,12 @@ body{
   background-color: lightgrey;
 }
 
+.message-count {
+  margin-top: 20px;
+}
+
+.mat-badge-content {
+  background: rgba(133, 117, 117, 0.76);
+  color: white;
+}
 

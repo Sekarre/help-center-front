@@ -8,6 +8,6 @@ export enum ApiPaths {
   EventMessages = '/api/v1/event-notifications',
   WebSocket = '/websocket',
   WebSocketSubscribe = '/topic/private.',
-  WebSocketErrorsSubscribe = '/topic/private.errors',
+  WebSocketErrorsSubscribe = '/user/topic/private.errors',
   WebSocketSend = '/app/private-chat-room.',
 }

@@ -10,15 +10,15 @@
     <button mat-button [matMenuTriggerFor]="menu">
       <mat-icon matBadge="{{allEventsCount}}" matBadgeColor="warn" fontIcon="notifications"></mat-icon>
     </button>
-    <button mat-button >
-      <mat-icon  (click)="logout()" fontIcon="exit_to_app"></mat-icon>
+    <button mat-button>
+      <mat-icon (click)="logout()" fontIcon="exit_to_app"></mat-icon>
     </button>
     <mat-menu #menu="matMenu">
-      <button *ngFor="let e of events | keyvalue" mat-menu-item
-              (click)="navigateToDestination(getDestinationIdFromMapKey(e.key), getEventTypeIdFromMapKey(e.key))">
+      <button *ngFor="let e of this.eventService.getEvents() | keyvalue" mat-menu-item
+              (click)="navigateToDestination(this.eventService.getDestinationIdFromMapKey(e.key), this.eventService.getEventTypeIdFromMapKey(e.key))">
         <span matBadgePosition="before" matBadgeSize="small" matBadge="{{e.value.length}}"
               matBadgeOverlap="false">
-          {{getNotificationMessage(getDestinationIdFromMapKey(e.key), getEventTypeIdFromMapKey(e.key))}}
+          {{getNotificationMessage(this.eventService.getDestinationIdFromMapKey(e.key), this.eventService.getEventTypeIdFromMapKey(e.key))}}
         </span>
       </button>
     </mat-menu>

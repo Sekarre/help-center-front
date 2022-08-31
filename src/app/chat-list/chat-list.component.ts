@@ -1,8 +1,12 @@
-import {Component, ComponentRef, Input, OnInit, ViewChildren, ViewContainerRef} from '@angular/core';
+import {Component, ComponentRef, OnInit, ViewChildren, ViewContainerRef} from '@angular/core';
 import {ChatService} from "../services/chat.service";
-import {ActivatedRoute, Router} from "@angular/router";
+import {ActivatedRoute} from "@angular/router";
 import {ChatInfo} from "../domain/ChatInfo";
 import {MatSnackBar} from "@angular/material/snack-bar";
+import {EventService} from "../services/event.service";
+import {NavbarListenerService} from "../services/listeners/navbar-listener.service";
+import {EventType} from "../domain/EventType";
+import {EventNotificationService} from "../services/event-notification.service";
 
 @Component({
   selector: 'app-chat-list',
@@ -22,8 +26,8 @@ export class ChatListComponent implements OnInit {
   @ViewChildren('chat', {read: ViewContainerRef}) ref!: ViewContainerRef;
   private componentRef!: ComponentRef<any>;
 
-  constructor(private chatService: ChatService, private snackBar: MatSnackBar,
-              private route: ActivatedRoute) {
+  constructor(private chatService: ChatService, public eventService: EventService, private navbarListenerService: NavbarListenerService,
+              private eventNotificationService: EventNotificationService, private snackBar: MatSnackBar, private route: ActivatedRoute) {
   }
 
   ngOnInit(): void {
@@ -53,9 +57,17 @@ export class ChatListComponent implements OnInit {
     this.issueId = issueId;
     this.showChat = false;
     this.selectedChannelId = channelId;
+    this.updateNotifications(channelId);
     setTimeout(() => {
       this.showChat = true
     }, 100);
+  }
+
+  private updateNotifications(channelId: string) {
+    this.eventNotificationService.markEventNotificationAsRead(channelId, EventType.NEW_CHAT_MESSAGE).subscribe(() => {
+      this.navbarListenerService.setNavbarRemoveNotifications(channelId, EventType.NEW_CHAT_MESSAGE);
+      this.eventService.removeFromEventMap(channelId, EventType.NEW_CHAT_MESSAGE);
+    });
   }
 
   destroyStickyChat() {
