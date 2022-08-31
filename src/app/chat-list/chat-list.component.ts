@@ -40,7 +40,7 @@ export class ChatListComponent implements OnInit {
 
   private setChatFromParam() {
     this.route.queryParamMap.subscribe(params => {
-      if (params) {
+      if (params && params.keys.length != 0) {
         let paramChannelId = params.get("channelId")!;
         let chat = this.chatList.filter(chat => chat.channelId == paramChannelId)[0];
         this.setChannelAndIssueId(paramChannelId, chat.issueId);

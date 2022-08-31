@@ -2,9 +2,13 @@ body{
   background-color: #f4f7f6;
   margin-top:20px;
 }
+
+.row {
+  --bs-gutter-x: 0rem
+}
+
 .card {
   background: #fff;
-  transition: .5s;
   border: 0;
   margin-bottom: 30px;
   border-radius: .55rem;
@@ -149,14 +153,13 @@ body{
 .chat .chat-history .message:after {
   bottom: 100%;
   left: 7%;
-  border: solid transparent;
   content: " ";
   height: 0;
   width: 0;
   position: absolute;
   pointer-events: none;
+  border: 10px solid transparent;
   border-bottom-color: #fff;
-  border-width: 10px;
   margin-left: -10px
 }
 
@@ -167,14 +170,13 @@ body{
 .chat .chat-history .my-message:after {
   bottom: 100%;
   left: 30px;
-  border: solid transparent;
   content: " ";
   height: 0;
   width: 0;
   position: absolute;
   pointer-events: none;
+  border: 10px solid transparent;
   border-bottom-color: #efefef;
-  border-width: 10px;
   margin-left: -10px
 }
 

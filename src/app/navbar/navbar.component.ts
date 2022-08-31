@@ -94,8 +94,10 @@ export class NavbarComponent implements OnInit {
   }
 
   private removeFromEventMap(destinationId: string, eventType: string) {
-    this.allEventsCount -= this.events.get(this.getKeyFromDestinationAndEventType(destinationId, eventType))!.length;
-    this.events.delete(this.getKeyFromDestinationAndEventType(destinationId, eventType))
+    if (this.events.size != 0) {
+      this.allEventsCount -= this.events.get(this.getKeyFromDestinationAndEventType(destinationId, eventType))!.length;
+      this.events.delete(this.getKeyFromDestinationAndEventType(destinationId, eventType))
+    }
   }
 
   isUserAuthenticated(): boolean {

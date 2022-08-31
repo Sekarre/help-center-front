@@ -1,88 +1,13 @@
-<!--<div class=" content">-->
-<!--  <div class="justify-content-center card-body row">-->
-<!--    <div class=" col-10">-->
-<!--      <app-alert></app-alert>-->
-<!--      <div class=" card card-chart">-->
-<!--        <div class=" card-header">-->
-<!--          <div class=" row">-->
-<!--            <div class=" col-sm-6">-->
-<!--            </div>-->
-<!--          </div>-->
-<!--        </div>-->
-<!--        <form [formGroup]="loginFormGroup" (ngSubmit)="login()">-->
-<!--          <div formGroupName="user" class="d-flex justify-content-center card-body">-->
-<!--            <div class=" card card-user col-10 ">-->
-<!--              <div>-->
-<!--              </div>-->
-<!--              <div class=" card-body">-->
-<!--                <p class=" card-text"></p>-->
-<!--                <div class=" author">-->
-<!--                  <div class=" block block-one"></div>-->
-<!--                  <div class=" block block-two"></div>-->
-<!--                </div>-->
-<!--                <h2 class="d-flex justify-content-center title">Login</h2>-->
-<!--                <div class="d-flex justify-content-center row">-->
-<!--                  <div class=" col-md-5 pr-md-1">-->
-<!--                    <div class="form-group">-->
-<!--                      <label> Login </label>-->
-<!--                      <input class=" form-control" placeholder="Login" type="text" formControlName="login"/>-->
-<!--                    </div>-->
-<!--                  </div>-->
-<!--                </div>-->
-<!--                <div class="d-flex justify-content-center row">-->
-<!--                  <div class=" col-md-5 pr-md-1">-->
-<!--                    <div class=" form-group">-->
-<!--                      <label> Password </label>-->
-<!--                      <div class="input-group ">-->
-<!--                        <input class=" form-control" placeholder="Password" required [type]="fieldTextType ? 'text' : 'password'" formControlName="password"/>-->
-<!--                        <div class="input-group-append ">-->
-<!--                               <span class="input-group-text" style="background-color: transparent;">-->
-<!--                                  <i class="fa" style="padding-left: 8px" [ngClass]="{'fa-eye-slash': !fieldTextType,'fa-eye': fieldTextType}" (click)="toggleFieldTextType()"></i>-->
-<!--                               </span>-->
-<!--                        </div>-->
-<!--                      </div>-->
-<!--                    </div>-->
-<!--                  </div>-->
-<!--                </div>-->
-<!--                <div class="d-flex justify-content-center card-description">-->
-<!--                </div>-->
-
-<!--              </div>-->
-<!--            </div>-->
-<!--          </div>-->
-<!--        </form>-->
-<!--      </div>-->
-<!--    </div>-->
-<!--  </div>-->
-<!--</div>-->
-<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<div id="login">
-  <app-alert></app-alert>
-  <h3 class="text-center text-white pt-5">Login form</h3>
-  <div class="container">
-    <div id="login-row" class="row justify-content-center align-items-center">
-      <div id="login-column" class="col-md-6">
-        <div id="login-box" class="col-md-12">
-          <form [formGroup]="loginFormGroup" (ngSubmit)="login()">
-            <div formGroupName="user">
-              <h3 formGroupName="user" class="text-center text-info">Login</h3>
-              <div class="form-group">
-                <label for="username" class="text-info">Username:</label><br>
-                <input type="text" formControlName="login" name="username" id="username" class="form-control">
-              </div>
-              <div class="form-group">
-                <label for="password" class="text-info">Password:</label><br>
-                <input type="text" formControlName="password" name="password" id="password" class="form-control">
-              </div>
-              <div class="form-group">
-                <input type="submit" name="submit" class="btn btn-info btn-md" value="login">
-              </div>
-            </div>
-          </form>
-        </div>
+<div class="center-wrapper">
+  <div class="card card-container">
+    <img id="profile-img" class="profile-img-card" src="//ssl.gstatic.com/accounts/ui/avatar_2x.png" />
+    <p id="profile-name" class="profile-name-card"></p>
+    <form [formGroup]="loginFormGroup" (ngSubmit)="login()" class="form-signing">
+      <div formGroupName="user">
+      <input type="text" id="login" formControlName="login" class="form-control" placeholder="Username" required autofocus>
+      <input type="password" id="password" class="form-control" formControlName="password" placeholder="Password" required>
+      <button class="btn btn-lg btn-primary  btn-signing" value="login" type="submit">Sign in</button>
       </div>
-    </div>
+    </form>
   </div>
 </div>
