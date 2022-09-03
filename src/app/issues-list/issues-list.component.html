@@ -7,7 +7,7 @@
       <div mat-line> last update: {{issue.updatedAt}} </div>
       <div mat-line> created by: {{issue.firstName + ' ' + issue?.lastName}} </div>
       <p
-        align="end">{{issue?.eventNotificationCount == 0 ? '&nbsp;' : 'New messages:' + issue.eventNotificationCount}}</p>
+        align="end">{{(issue.eventNotificationCount === undefined || issue?.eventNotificationCount == 0) ? '&nbsp;' : 'New comments: ' + issue.eventNotificationCount}}</p>
       <div mat-line align="start">{{issue.issueStatus}}</div>
     </mat-list-option>
   </div>
@@ -20,7 +20,7 @@
       <div mat-line> last update: {{issue.updatedAt}} </div>
       <div mat-line> created by: {{issue.firstName + ' ' + issue?.lastName}} </div>
       <p
-        align="end">{{issue?.eventNotificationCount == 0 ? '&nbsp;' : 'New messages:' + issue.eventNotificationCount}}</p>
+        align="end">{{(issue.eventNotificationCount === undefined || issue?.eventNotificationCount == 0) ? '&nbsp;' : 'New comments: ' + issue.eventNotificationCount}}</p>
       <div mat-line align="start">{{issue.issueStatus}}</div>
     </mat-list-option>
   </div>
@@ -33,7 +33,7 @@
       <div mat-line> last update: {{issue.updatedAt}} </div>
       <div mat-line> created by: {{issue.firstName + ' ' + issue?.lastName}} </div>
       <p
-        align="end">{{issue?.eventNotificationCount == 0 ? '&nbsp;' : 'New messages:' + issue.eventNotificationCount}}</p>
+        align="end">{{(issue.eventNotificationCount === undefined || issue?.eventNotificationCount == 0) ? '&nbsp;' : 'New comments: ' + issue.eventNotificationCount}}</p>
       <div mat-line align="start">{{issue.issueStatus}}</div>
     </mat-list-option>
   </div>
@@ -46,7 +46,7 @@
       <div mat-line> last update: {{issue.updatedAt}} </div>
       <div mat-line> created by: {{issue.firstName + ' ' + issue?.lastName}} </div>
       <p
-        align="end">{{issue?.eventNotificationCount == 0 ? '&nbsp;' : 'New messages:' + issue.eventNotificationCount}}</p>
+        align="end">{{(issue.eventNotificationCount === undefined || issue?.eventNotificationCount == 0) ? '&nbsp;' : 'New comments: ' + issue.eventNotificationCount}}</p>
       <div mat-line align="start">{{issue.issueStatus}}</div>
     </mat-list-option>
   </div>
